@@ -1,12 +1,12 @@
-.footer{
-    position: fixed;
-    border: 0;
+.footer {
+    position: relative;
     width: 100%;
-    background-color: #333;
+    background: #2c3e50;
     color: #fff;
     text-align: center;
-    padding: 20px 0;
-    z-index: 1000;
+    padding: 40px 20px;
+    margin-top: 80px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .footer-links ul {
@@ -15,15 +15,47 @@
     padding: 0;
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    gap: 10px;
 }
+
 .footer-links a {
     text-decoration: none;
     color: white;
-    font-weight: bold;
-    margin: 0 15px;
+    font-weight: 600;
+    font-size: 15px;
+    margin: 0 20px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
+
+.footer-links a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
 .footer-info p {
-    color: white;
-    margin: 0 0;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.footer-info p:first-child {
+    font-weight: 600;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+    .footer-links ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .footer-links a {
+        margin: 5px 0;
+    }
 }

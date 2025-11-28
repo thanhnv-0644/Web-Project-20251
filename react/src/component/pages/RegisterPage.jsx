@@ -39,47 +39,66 @@ const RegisterPage = () => {
 
     return (
         <div className="register-page">
-            <h2>Register</h2>
-            {message && <p className="message">{message}</p>}
-            <form onSubmit={handleSubmit}>
-                <label>Email: </label>
-                <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required />
+            <div className="register-container">
+                <div className="register-header">
+                    <h2>Đăng Ký Tài Khoản</h2>
+                    <p>Tạo tài khoản mới để bắt đầu mua sắm</p>
+                </div>
+                
+                {message && <p className="message">{message}</p>}
+                
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="example@email.com"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required />
+                    </div>
 
-                <label>Name: </label>
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required />
+                    <div className="form-group">
+                        <label>Họ và tên</label>
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Nguyễn Văn A"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required />
+                    </div>
 
+                    <div className="form-group">
+                        <label>Số điện thoại</label>
+                        <input
+                            type="text"
+                            name="phoneNumber"
+                            placeholder="0123456789"
+                            value={formData.phoneNumber}
+                            onChange={handleChange}
+                            required />
+                    </div>
 
-                <label>Phone Number: </label>
-                <input
-                    type="text"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    required />
+                    <div className="form-group">
+                        <label>Mật khẩu</label>
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="••••••••"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required />
+                    </div>
 
-                <label>Password: </label>
-                <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required />
-
-                    <button type="submit">Register</button>
+                    <button type="submit" className="submit-button">Đăng Ký</button>
+                    
                     <p className="register-link">
-                        Already have an account? <a href="/login">Login</a>
+                        Đã có tài khoản? <a href="/login">Đăng nhập ngay</a>
                     </p>
-            </form>
+                </form>
+            </div>
         </div>
     )
 }

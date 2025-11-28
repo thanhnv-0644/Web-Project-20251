@@ -1,53 +1,87 @@
-.admin-product-list{
-    align-items: center;
-    width: 50%;
-    margin: auto;
+.admin-product-list {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.admin-product-list h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    font-weight: 700;
+}
+
+.product-btn {
+    border-radius: 10px;
+    margin: 5px;
+    padding: 12px 30px;
+    font-weight: 600;
+    cursor: pointer;
     font-size: 16px;
-}
-.product-btn{
-    border-radius: 5px;
-    margin: 5px 0px;
-    padding: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 18px;
     color: #fff;
     border: none;
-    background-color: #f68b1e;
+    background: #667eea;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
-.product-btn-delete{
-    border-radius: 5px;
-    margin: 5px 0px;
-    padding: 10px;
-    font-weight: 700;
+.product-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.product-btn-delete {
+    border-radius: 10px;
+    margin: 5px;
+    padding: 12px 30px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     color: #fff;
     border: none;
-    background-color: tomato;
+    background: #fc5c65;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(252, 92, 101, 0.3);
+}
 
+.product-btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(252, 92, 101, 0.4);
 }
-.admin-product-list button:hover{
-    background-color: #a66320;
-}
-.admin-product-list ul{
+
+.admin-product-list ul {
     list-style-type: none;
     padding: 0;
 }
-.admin-product-list li{
+
+.admin-product-list li {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 10px 10px 15px;
-    margin-bottom: 1.5px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    border: 2px solid #e8ecf1;
+    background: #fff;
+    transition: all 0.3s ease;
 }
-.admin-product-list span{
+
+.admin-product-list li:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+    transform: translateX(5px);
+}
+
+.admin-product-list span {
     flex: 1;
-    color: #444;
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 500;
 }
-.admin-product-list button{
+
+.admin-product-list button {
     margin-left: 10px;
 }

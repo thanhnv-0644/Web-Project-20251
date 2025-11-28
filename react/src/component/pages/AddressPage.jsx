@@ -58,55 +58,79 @@ const AddressPage = () => {
 
     return(
         <div className="address-page">
-            <h2>{location.pathname === '/edit-address' ? 'Edit Address' : "Add Addresss"}</h2>
-            {error && <p className="error-message">{error}</p>}
-            
-            <form onSubmit={handSubmit}>
-                <label>
-                    Street:
-                    <input type="text"
-                    name="street"
-                    value={address.street}
-                    onChange={handleChange}
-                    required/>
-                </label>
-                <label>
-                    City:
-                    <input type="text"
-                    name="city"
-                    value={address.city}
-                    onChange={handleChange}
-                    required/>
-                </label>
-                <label>
-                    State:
-                    <input type="text"
-                    name="state"
-                    value={address.state}
-                    onChange={handleChange}
-                    required/>
-                </label>
+            <div className="address-container">
+                <div className="address-header">
+                    <h2>{location.pathname === '/edit-address' ? 'Chỉnh Sửa Địa Chỉ' : "Thêm Địa Chỉ Mới"}</h2>
+                    <p>Vui lòng nhập thông tin địa chỉ giao hàng của bạn</p>
+                </div>
+                
+                {error && <p className="error-message">{error}</p>}
+                
+                <form onSubmit={handSubmit}>
+                    <div className="form-group">
+                        <label>Địa chỉ đường</label>
+                        <input 
+                            type="text"
+                            name="street"
+                            placeholder="Số nhà, tên đường"
+                            value={address.street}
+                            onChange={handleChange}
+                            required/>
+                    </div>
+                    
+                    <div className="form-row">
+                        <div className="form-group">
+                            <label>Thành phố</label>
+                            <input 
+                                type="text"
+                                name="city"
+                                placeholder="Hà Nội, TP.HCM, ..."
+                                value={address.city}
+                                onChange={handleChange}
+                                required/>
+                        </div>
+                        
+                        <div className="form-group">
+                            <label>Tỉnh/Bang</label>
+                            <input 
+                                type="text"
+                                name="state"
+                                placeholder="Tỉnh/Bang"
+                                value={address.state}
+                                onChange={handleChange}
+                                required/>
+                        </div>
+                    </div>
 
-                <label>
-                    Zip Code:
-                    <input type="text"
-                    name="zipcode"
-                    value={address.zipCode}
-                    onChange={handleChange}
-                    required/>
-                </label>
+                    <div className="form-row">
+                        <div className="form-group">
+                            <label>Mã bưu điện</label>
+                            <input 
+                                type="text"
+                                name="zipCode"
+                                placeholder="100000"
+                                value={address.zipCode}
+                                onChange={handleChange}
+                                required/>
+                        </div>
 
-                <label>
-                    Country:
-                    <input type="text"
-                    name="country"
-                    value={address.country}
-                    onChange={handleChange}
-                    required/>
-                </label>
-                <button type="submit">{location.pathname === '/edit-address' ? 'Edit Address' : "Save Addresss"}</button>
-
-            </form>
+                        <div className="form-group">
+                            <label>Quốc gia</label>
+                            <input 
+                                type="text"
+                                name="country"
+                                placeholder="Việt Nam"
+                                value={address.country}
+                                onChange={handleChange}
+                                required/>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" className="submit-button">
+                        {location.pathname === '/edit-address' ? 'Cập Nhật Địa Chỉ' : "Lưu Địa Chỉ"}
+                    </button>
+                </form>
+            </div>
         </div>
     )
 }

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useLocation } from "react-router-dom";
 import ProductList from "../common/ProductList";
 import Pagination from "../common/Pagination";
+import CategorySidebar from "../common/CategorySidebar";
 import ApiService from "../../service/ApiService";
 import '../../style/home.css';
 
@@ -46,16 +47,21 @@ const Home = () => {
 
     return(
         <div className="home">
-            {error ? (
-                <p className="error-message">{error}</p>
-            ):(
-                <div>
-                    <ProductList products={products}/>
-                    <Pagination  currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={(page)=> setCurrentPage(page)}/>
+            <div className="home-container">
+                <CategorySidebar />
+                <div className="home-content">
+                    {error ? (
+                        <p className="error-message">{error}</p>
+                    ):(
+                        <div>
+                            <ProductList products={products}/>
+                            <Pagination  currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={(page)=> setCurrentPage(page)}/>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     )
 
