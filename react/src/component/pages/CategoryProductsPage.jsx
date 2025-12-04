@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import ApiService from "../../service/ApiService";
 import ProductList from "../common/ProductList";
 import Pagination from "../common/Pagination";
+import CategorySidebar from "../common/CategorySidebar";
 import '../../style/home.css'
 
 
@@ -18,6 +19,7 @@ const CategoryProductsPage = () => {
 
     useEffect(() => {
         fetchProducts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [categoryId, currentPage]);
 
     const fetchProducts = async () => {
@@ -35,16 +37,21 @@ const CategoryProductsPage = () => {
 
     return(
         <div className="home">
-            {error ? (
-                <p className="error-message">{error}</p>
-            ):(
-                <div>
-                    <ProductList products={products}/>
-                    <Pagination  currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={(page)=> setCurrentPage(page)}/>
+            <div className="home-container">
+                <CategorySidebar />
+                <div className="home-content">
+                    {error ? (
+                        <p className="error-message">{error}</p>
+                    ):(
+                        <div>
+                            <ProductList products={products}/>
+                            <Pagination  currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={(page)=> setCurrentPage(page)}/>
+                        </div>
+                    )}
                 </div>
-            )}
+            </div>
         </div>
     )
 }

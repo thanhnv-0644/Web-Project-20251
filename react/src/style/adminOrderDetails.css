@@ -1,44 +1,89 @@
-.order-details-page{
-    padding: 20px;
-    width: 50%;
-    margin: auto;
-    margin-bottom: 100px;
-}
-.order-details-page h2{
-    text-align: center;
-    font-weight: 700;
-}
-.message{
-    text-align: center;
-    margin-bottom: 20px;
-}
-.order-item-details{
-    border: 1px solid #ddd;
-    padding: 20px;
-    margin-bottom: 20px;
+.order-details-page {
+    padding: 40px 20px;
+    max-width: 900px;
+    margin: 0 auto 100px;
 }
 
-.info, .status-change{
+.order-details-page h2 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 36px;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.message {
+    text-align: center;
     margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: 500;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
-.info p{
-    margin: 5px 0;
+
+.order-item-details {
+    background: #fff;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
-.status-option{
-    padding: 10px;
+
+.info,
+.status-change {
+    margin-bottom: 25px;
 }
-.update-status-button{
-    background-color: #f68b1e;
+
+.info h3,
+.status-change h3 {
+    color: #2c3e50;
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.info p {
+    margin: 10px 0;
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.status-option {
+    padding: 12px 16px;
+    font-size: 15px;
+    border: 2px solid #e8ecf1;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.status-option:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.update-status-button {
+    background: #667eea;
     color: #fff;
-    margin-left: 10px;
-    padding: 10px;
-    font-weight: 800;
+    margin-left: 15px;
+    padding: 12px 30px;
+    font-weight: 600;
     font-size: 15px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
-.update-status-button:hover{
-    background-color: #b77029;
+
+.update-status-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 

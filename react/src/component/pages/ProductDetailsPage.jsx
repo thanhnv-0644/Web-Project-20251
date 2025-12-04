@@ -13,6 +13,7 @@ const ProductDetailsPage = () => {
 
     useEffect(()=>{
         fetchProduct();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productId])
 
     const fetchProduct = async () => {
@@ -52,27 +53,53 @@ const ProductDetailsPage = () => {
     }
 
     if (!product) {
-        return <p>Loading product details ...</p>
+        return (
+            <div className="loading-container">
+                <p>Đang tải thông tin sản phẩm...</p>
+            </div>
+        )
     }
 
     const cartItem = cart.find(item => item.id === product.id);
 
     return(
-        <div className="product-detail">
-            <img src={product?.imageUrl} alt={product?.name} />
-            <h1>{product?.name}</h1>
-            <p>{product?.description}</p>
-            <span>${product.price.toFixed(2)}</span>
-            {cartItem ? (
-                <div className="quantity-controls">
-                    <button onClick={decrementItem}>-</button>
-                    <span>{cartItem.quantity}</span>
-                    <button onClick={incrementItem}>+</button>
+        <div className="product-detail-page">
+            <div className="product-detail">
+                <div className="product-image-section">
+                    <img src={product?.imageUrl} alt={product?.name} />
                 </div>
-            ):(
-                <button onClick={addToCart}>Add To Cart</button>
-            )}
-
+                
+                <div className="product-info-section">
+                    <h1>{product?.name}</h1>
+                    
+                    <div className="product-price">
+                        <span className="price-label">Giá:</span>
+                        <span className="price-value">${product.price.toFixed(2)}</span>
+                    </div>
+                    
+                    <div className="product-description">
+                        <h3>Mô tả sản phẩm</h3>
+                        <p>{product?.description}</p>
+                    </div>
+                    
+                    <div className="product-actions">
+                        {cartItem ? (
+                            <div className="cart-controls">
+                                <span className="controls-label">Số lượng trong giỏ:</span>
+                                <div className="quantity-controls">
+                                    <button onClick={decrementItem}>-</button>
+                                    <span>{cartItem.quantity}</span>
+                                    <button onClick={incrementItem}>+</button>
+                                </div>
+                            </div>
+                        ):(
+                            <button className="add-to-cart-btn" onClick={addToCart}>
+                                Thêm Vào Giỏ Hàng
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
     )
 

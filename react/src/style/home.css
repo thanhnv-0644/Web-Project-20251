@@ -1,9 +1,37 @@
-.home{
-    padding: 20px;
+.home {
+    padding: 30px 40px;
+    min-height: calc(100vh - 200px);
+    background: #f5f7fa;
 }
-.error-message{
+
+.home-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.home-content {
+    min-height: 500px;
+}
+
+.error-message {
     text-align: center;
-    color: red;
-    font-size: 20px;
-    margin-top: 20px;
+    color: #e74c3c;
+    font-size: 18px;
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #ffe6e6;
+    border-radius: 12px;
+    border-left: 4px solid #e74c3c;
+    max-width: 600px;
+    margin: 40px auto;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.1);
+}
+
+@media (max-width: 968px) {
+    .home-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 }

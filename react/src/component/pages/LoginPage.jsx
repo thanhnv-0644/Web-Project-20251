@@ -39,31 +39,44 @@ const LoginPage = () => {
 
     return (
         <div className="register-page">
-            <h2>Login</h2>
-            {message && <p className="message">{message}</p>}
-            <form onSubmit={handleSubmit}>
-                <label>Email: </label>
-                <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required />
-                    
-                <label>Password: </label>
-                <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required />
+            <div className="register-container">
+                <div className="register-header">
+                    <h2>Đăng Nhập</h2>
+                    <p>Chào mừng bạn quay trở lại!</p>
+                </div>
+                
+                {message && <p className="message">{message}</p>}
+                
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="example@email.com"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required />
+                    </div>
+                        
+                    <div className="form-group">
+                        <label>Mật khẩu</label>
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="••••••••"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required />
+                    </div>
 
-                    <button type="submit">Login</button>
+                    <button type="submit" className="submit-button">Đăng Nhập</button>
                     
                     <p className="register-link">
-                        Don't have an account? <a href="/register">Register</a>
+                        Chưa có tài khoản? <a href="/register">Đăng ký ngay</a>
                     </p>
-            </form>
+                </form>
+            </div>
         </div>
     )
 }

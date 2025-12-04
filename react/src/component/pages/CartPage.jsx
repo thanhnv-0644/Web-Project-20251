@@ -73,34 +73,59 @@ const CartPage = () => {
 
     return (
         <div className="cart-page">
-            <h1>Cart</h1>
-            {message && <p className="response-message">{message}</p>}
+            <div className="cart-container">
+                <h2>Giỏ Hàng Của Bạn</h2>
+                {message && <p className="response-message">{message}</p>}
 
-            {cart.length === 0 ? (
-                <p>Your cart is empty</p>
-            ) : (
-                <div>
-                    <ul>
-                        {cart.map(item => (
-                            <li key={item.id}>
-                                <img src={item.imageUrl} alt={item.name} />
-                                <div>
-                                    <h2>{item.name}</h2>
-                                    <p>{item.description}</p>
-                                    <div className="quantity-controls">
-                                        <button onClick={()=> decrementItem(item)}>-</button>
-                                        <span>{item.quantity}</span>
-                                        <button onClick={()=> incrementItem(item)}>+</button>
+                {cart.length === 0 ? (
+                    <div className="empty-cart">
+                        <p>Giỏ hàng của bạn đang trống</p>
+                        <button onClick={() => navigate('/')}>Tiếp Tục Mua Sắm</button>
+                    </div>
+                ) : (
+                    <div className="cart-content">
+                        <div className="cart-items">
+                            {cart.map(item => (
+                                <div key={item.id} className="cart-item">
+                                    <img src={item.imageUrl} alt={item.name} />
+                                    <div className="item-info">
+                                        <h3>{item.name}</h3>
+                                        <p className="item-description">{item.description}</p>
+                                        <div className="item-actions">
+                                            <div className="quantity-controls">
+                                                <button onClick={() => decrementItem(item)}>-</button>
+                                                <span>{item.quantity}</span>
+                                                <button onClick={() => incrementItem(item)}>+</button>
+                                            </div>
+                                            <span className="price">${(item.price * item.quantity).toFixed(2)}</span>
+                                        </div>
                                     </div>
-                                    <span>${item.price.toFixed()}</span>
                                 </div>
-                            </li>
-                        ))}
-                    </ul>
-                    <h2>Total: ${totalPrice.toFixed(2)}</h2>
-                    <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
-                </div>
-            )}
+                            ))}
+                        </div>
+                        
+                        <div className="cart-summary">
+                            <h3>Tóm Tắt Đơn Hàng</h3>
+                            <div className="summary-row">
+                                <span>Tạm tính:</span>
+                                <span>${totalPrice.toFixed(2)}</span>
+                            </div>
+                            <div className="summary-row">
+                                <span>Phí vận chuyển:</span>
+                                <span>Miễn phí</span>
+                            </div>
+                            <div className="summary-divider"></div>
+                            <div className="summary-row total">
+                                <span>Tổng cộng:</span>
+                                <span>${totalPrice.toFixed(2)}</span>
+                            </div>
+                            <button className="checkout-button" onClick={handleCheckout}>
+                                Thanh Toán
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

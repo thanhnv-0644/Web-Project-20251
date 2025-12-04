@@ -1,25 +1,42 @@
-.admin-page{
-    margin-bottom: 200px;
+.admin-page {
+    min-height: calc(100vh - 200px);
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 60px 20px;
+    background: linear-gradient(to bottom, #f5f7fa 0%, #e8ecf1 100%);
 }
-.admin-page h1{
-    margin-bottom: 20xp;
-    font-size: 35px;
-}
-.admin-page button{
-    margin: 10px;
-    padding: 20px;
-    font-size: 20px;
-    border-radius: 8px;
+
+.admin-page h1 {
+    margin-bottom: 50px;
+    font-size: 42px;
+    color: #2c3e50;
     font-weight: 700;
+    text-align: center;
+    color: #667eea;
+}
+
+.admin-page button {
+    margin: 15px;
+    padding: 20px 40px;
+    font-size: 18px;
+    border-radius: 15px;
+    font-weight: 600;
     border: none;
     cursor: pointer;
-    background-color: #f68b1e;
-    width: 35%;
+    background: #667eea;
+    width: 400px;
+    max-width: 90%;
     color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
 }
-.admin-page button:hover{
-    background-color: #a45d17;
+
+.admin-page button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.admin-page button:active {
+    transform: translateY(-1px);
 }

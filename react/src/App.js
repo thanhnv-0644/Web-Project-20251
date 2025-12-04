@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ProtectedRoute, AdminRoute } from './service/Guard';
 import Navbar from './component/common/Navbar';
 import Footer from './component/common/footer';
@@ -34,7 +34,7 @@ function App() {
           <Route path='/product/:productId' element={<ProductDetailsPage/>} />
           <Route path='/categories' element={<CategoryListPage/>}/>
           <Route path='/category/:categoryId' element={<CategoryProductsPage/>} />
-          <Route path='/cart' element={<CartPage/>}/>
+          <Route path='/cart' element={<ProtectedRoute element={<CartPage/>} />}/>
           <Route path='/register' element={<RegisterPage/>}/>
           <Route path='/login' element={<LoginPage/>}/>
 
