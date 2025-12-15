@@ -68,13 +68,14 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3 -->
-		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-s3</artifactId>
-			<version>1.12.761</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
+	<!-- Cloudinary for image upload - FREE -->
+	<dependency>
+		<groupId>com.cloudinary</groupId>
+		<artifactId>cloudinary-http44</artifactId>
+		<version>1.38.0</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
