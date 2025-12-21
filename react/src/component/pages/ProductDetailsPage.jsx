@@ -120,37 +120,74 @@ const ProductDetailsPage = () => {
             <div className="review-section">
                 <h2>Đánh giá sản phẩm</h2>
 
-                <p>⭐ Trung bình: {averageRating.toFixed(1)} / 5</p>
+                <p className="average-rating">
+                    ⭐ Trung bình: <strong>{averageRating.toFixed(1)}</strong> / 5
+                </p>
 
-                {/* ADD REVIEW */}
+                {/* ===== ADD REVIEW ===== */}
                 <div className="add-review">
                     <h3>Viết đánh giá</h3>
 
-                    <select value={rating} onChange={e => setRating(+e.target.value)}>
-                        {[5,4,3,2,1].map(r => (
-                            <option key={r} value={r}>{r} ⭐</option>
-                        ))}
-                    </select>
+                    {/* STAR RATING INPUT */}
+                    <div className="rating-input">
+                        {[1, 2, 3, 4, 5].map(star => (
+                            <span
+                                key={star}
+                                className={star <= rating ? "active" : ""}
+                                onClick={() => setRating(star)}
+                            >
+                                ★
+                                </span>
+                            ))}
+                    </div>
 
                     <textarea
-                        placeholder="Nhập đánh giá của bạn..."
+                        placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..."
                         value={content}
                         onChange={e => setContent(e.target.value)}
                     />
 
-                    <button type="button" onClick={submitReview}>Gửi đánh giá</button>
+                    <button
+                        type="button"
+                        className="submit-review-btn"
+                        onClick={submitReview}
+                    >
+                        Gửi đánh giá
+                    </button>
                 </div>
 
-                {/* REVIEW LIST */}
+                {/* ===== REVIEW LIST ===== */}
                 <div className="review-list">
-                    {reviews.length === 0 && <p>Chưa có đánh giá nào</p>}
+                    {reviews.length === 0 && (
+                        <p className="no-review">Chưa có đánh giá nào</p>
+                    )}
 
                     {reviews.map(review => (
                         <div key={review.id} className="review-item">
-                            <strong>{review.userName}</strong>
-                            <span>⭐ {review.rating}</span>
-                            <p>{review.content}</p>
-                            <small>{new Date(review.createdAt).toLocaleDateString()}</small>
+                            <div className="review-header">
+                                <div className="review-user">
+                                    <div className="review-avatar">
+                                        {review.userName?.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div>
+                                        <div className="review-username">
+                                            {review.userName}
+                                        </div>
+                                        <div className="review-date">
+                                            {new Date(review.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="review-rating">
+                                    {"★".repeat(review.rating)}
+                                    {"☆".repeat(5 - review.rating)}
+                                </div>
+                            </div>
+
+                            <p className="review-content">
+                                {review.content}
+                            </p>
                         </div>
                     ))}
                 </div>
