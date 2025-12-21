@@ -16,6 +16,7 @@ public class Response {
     private int status;
     private String message;
     private final LocalDateTime timestamp = LocalDateTime.now();
+    private DashboardResponseDto dashboard;
 
     private String token;
     private String role;
@@ -40,4 +41,8 @@ public class Response {
 
     private OrderDto order;
     private List<OrderDto> orderList;
+
+    private List<ReviewResponseDto> reviews;
+    private Double averageRating;
+
 }

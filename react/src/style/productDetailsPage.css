@@ -192,4 +192,18 @@
     .product-info-section h1 {
         font-size: 24px;
     }
+    
+}
+.review-section {
+  margin-top: 40px;
+}
+
+.review-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.add-review textarea {
+  width: 100%;
+  min-height: 80px;
 }
