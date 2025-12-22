@@ -250,6 +250,27 @@ static async addReview(body) {
     );
     return response.data;
 }
+/** REVIEW API - UPDATE */
+static async updateReview(reviewId, body) {
+    const response = await axios.put(
+        `${this.BASE_URL}/api/reviews/${reviewId}`,
+        body,
+        {
+            headers: this.getHeader()
+        }
+    );
+    return response.data;
+}
+/** REVIEW API - DELETE */
+static async deleteReview(reviewId) {
+    const response = await axios.delete(
+        `${this.BASE_URL}/api/reviews/${reviewId}`,
+        {
+            headers: this.getHeader()
+        }
+    );
+    return response.data;
+}
 
 
 
