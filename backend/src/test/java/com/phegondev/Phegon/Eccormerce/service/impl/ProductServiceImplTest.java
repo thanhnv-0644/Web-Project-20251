@@ -8,7 +8,7 @@ import com.phegondev.Phegon.Eccormerce.exception.NotFoundException;
 import com.phegondev.Phegon.Eccormerce.mapper.EntityDtoMapper;
 import com.phegondev.Phegon.Eccormerce.repository.CategoryRepo;
 import com.phegondev.Phegon.Eccormerce.repository.ProductRepo;
-import com.phegondev.Phegon.Eccormerce.service.AwsS3Service;
+import com.phegondev.Phegon.Eccormerce.service.CloudinaryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,7 +36,7 @@ class ProductServiceImplTest {
     private CategoryRepo categoryRepo;
 
     @Mock
-    private AwsS3Service awsS3Service;
+    private CloudinaryService cloudinaryService;
 
     @Mock
     private EntityDtoMapper entityDtoMapper;
@@ -57,7 +56,7 @@ class ProductServiceImplTest {
         Category category = new Category();
         category.setId(categoryId);
         when(categoryRepo.findById(categoryId)).thenReturn(Optional.of(category));
-        when(awsS3Service.saveImageToS3(multipartFile)).thenReturn("http://example.com/image.jpg");
+        when(cloudinaryService.saveImageToCloudinary(multipartFile)).thenReturn("http://example.com/image.jpg");
 
         // Act
         Response response = productService.createProduct(
@@ -95,7 +94,7 @@ class ProductServiceImplTest {
 
         when(productRepo.findById(productId)).thenReturn(Optional.of(product));
         when(categoryRepo.findById(categoryId)).thenReturn(Optional.of(category));
-        when(awsS3Service.saveImageToS3(multipartFile)).thenReturn("http://example.com/image.jpg");
+        when(cloudinaryService.saveImageToCloudinary(multipartFile)).thenReturn("http://example.com/image.jpg");
 
         // Act
         Response response = productService.updateProduct(

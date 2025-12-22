@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default class ApiService {
 
-    static BASE_URL = "http://localhost:2424";
+    static BASE_URL = process.env.REACT_APP_API_URL || "";
 
     static getHeader() {
         const token = localStorage.getItem("token");
@@ -181,6 +181,75 @@ export default class ApiService {
         const role = localStorage.getItem('role')
         return role === 'ADMIN'
     }
+    /** DASHBOARD API */
+static async getDashboardSummary() {
+    const res = await axios.get(
+        `${this.BASE_URL}/api/admin/dashboard/summary`,
+        { headers: this.getHeader() }
+    );
+    return res.data;
+}
+
+static async getRevenueByMonth() {
+    const res = await axios.get(
+        `${this.BASE_URL}/api/admin/dashboard/revenue-by-month`,
+        { headers: this.getHeader() }
+    );
+    return res.data;
+}
+
+static async getTopProducts(limit = 5) {
+    const res = await axios.get(
+        `${this.BASE_URL}/api/admin/dashboard/top-products`,
+        {
+            headers: this.getHeader(),
+            params: { limit }
+        }
+    );
+    return res.data;
+}
+
+static async getUserGrowth() {
+    const res = await axios.get(
+        `${this.BASE_URL}/api/admin/dashboard/user-growth`,
+        { headers: this.getHeader() }
+    );
+    return res.data;
+}
+static async get(url) {
+    const response = await axios.get(`${this.BASE_URL}${url}`, {
+        headers: this.getHeader()
+    });
+    return response;
+}
+    
+/** REVIEW API */
+static async post(url, data) {
+    const response = await axios.post(
+        `${this.BASE_URL}${url}`,
+        data,
+        { headers: this.getHeader() }
+    );
+    return response.data;
+}
+
+static async getReviewsByProduct(productId) {
+    const response = await axios.get(
+        `${this.BASE_URL}/api/reviews/product/${productId}`
+    );
+    return response.data;
+}
+
+static async addReview(body) {
+    const response = await axios.post(
+        `${this.BASE_URL}/api/reviews`,
+        body,
+        {
+            headers: this.getHeader() 
+        }
+    );
+    return response.data;
+}
 
 
 

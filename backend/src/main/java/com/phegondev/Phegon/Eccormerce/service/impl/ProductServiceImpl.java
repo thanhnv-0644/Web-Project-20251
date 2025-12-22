@@ -8,7 +8,7 @@ import com.phegondev.Phegon.Eccormerce.exception.NotFoundException;
 import com.phegondev.Phegon.Eccormerce.mapper.EntityDtoMapper;
 import com.phegondev.Phegon.Eccormerce.repository.CategoryRepo;
 import com.phegondev.Phegon.Eccormerce.repository.ProductRepo;
-import com.phegondev.Phegon.Eccormerce.service.AwsS3Service;
+import com.phegondev.Phegon.Eccormerce.service.CloudinaryService;
 import com.phegondev.Phegon.Eccormerce.service.interf.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +28,14 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepo productRepo;
     private final CategoryRepo categoryRepo;
     private final EntityDtoMapper entityDtoMapper;
-    private final AwsS3Service awsS3Service;
+    private final CloudinaryService cloudinaryService;
 
 
 
     @Override
     public Response createProduct(Long categoryId, MultipartFile image, String name, String description, BigDecimal price) {
         Category category = categoryRepo.findById(categoryId).orElseThrow(()-> new NotFoundException("Category not found"));
-        String productImageUrl = awsS3Service.saveImageToS3(image);
+        String productImageUrl = cloudinaryService.saveImageToCloudinary(image);
 
         Product product = new Product();
         product.setCategory(category);
@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
              category = categoryRepo.findById(categoryId).orElseThrow(()-> new NotFoundException("Category not found"));
         }
         if (image != null && !image.isEmpty()){
-            productImageUrl = awsS3Service.saveImageToS3(image);
+            productImageUrl = cloudinaryService.saveImageToCloudinary(image);
         }
 
         if (category != null) product.setCategory(category);
