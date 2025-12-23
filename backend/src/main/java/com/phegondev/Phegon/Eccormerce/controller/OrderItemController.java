@@ -5,6 +5,7 @@ import com.phegondev.Phegon.Eccormerce.dto.OrderRequest;
 import com.phegondev.Phegon.Eccormerce.dto.Response;
 import com.phegondev.Phegon.Eccormerce.enums.OrderStatus;
 import com.phegondev.Phegon.Eccormerce.service.interf.OrderItemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ public class OrderItemController {
     private final OrderItemService orderItemService;
 
     @PostMapping("/create")
-    public ResponseEntity<Response> placeOrder(@RequestBody OrderRequest orderRequest){
+    public ResponseEntity<Response> placeOrder(@Valid @RequestBody OrderRequest orderRequest){
         return ResponseEntity.ok(orderItemService.placeOrder(orderRequest));
     }
 

@@ -4,6 +4,7 @@ package com.phegondev.Phegon.Eccormerce.controller;
 import com.phegondev.Phegon.Eccormerce.dto.CategoryDto;
 import com.phegondev.Phegon.Eccormerce.dto.Response;
 import com.phegondev.Phegon.Eccormerce.service.interf.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +19,7 @@ public class CategoryController {
 
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Response> createCategory(@RequestBody CategoryDto categoryDto){
+    public ResponseEntity<Response> createCategory(@Valid @RequestBody CategoryDto categoryDto){
         return ResponseEntity.ok(categoryService.createCategory(categoryDto));
     }
 
@@ -29,7 +30,7 @@ public class CategoryController {
 
     @PutMapping("/update/{categoryId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Response> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDto categoryDto){
+    public ResponseEntity<Response> updateCategory(@PathVariable Long categoryId, @Valid @RequestBody CategoryDto categoryDto){
         return ResponseEntity.ok(categoryService.updateCategory(categoryId, categoryDto));
     }
 

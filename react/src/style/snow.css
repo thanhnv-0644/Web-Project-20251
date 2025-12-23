@@ -1,6 +1,6 @@
 body {
   background: #0b1d2a;
-  
+  min-height: 100vh;
 }
 
 .snowflake {
@@ -15,6 +15,6 @@ body {
 
 @keyframes fall {
   to {
-    transform: translateY(100vh);
+    transform: translateY(calc(100vh + 200px));
   }
 }

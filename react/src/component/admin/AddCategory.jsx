@@ -32,7 +32,10 @@ const AddCategory = () => {
                 <input type="text"
                 placeholder="Category Name"
                 value={name}
-                onChange={(e)=> setName(e.target.value)} />
+                onChange={(e)=> setName(e.target.value)}
+                required
+                minLength="2"
+                maxLength="100" />
 
                 <button type="submit">Add</button>
             </form>

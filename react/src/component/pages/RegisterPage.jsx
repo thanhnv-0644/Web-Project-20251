@@ -56,6 +56,8 @@ const RegisterPage = () => {
                             placeholder="example@email.com"
                             value={formData.email}
                             onChange={handleChange}
+                            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                            title="Email phải đúng định dạng (vd: user@example.com)"
                             required />
                     </div>
 
@@ -67,17 +69,21 @@ const RegisterPage = () => {
                             placeholder="Nguyễn Văn A"
                             value={formData.name}
                             onChange={handleChange}
+                            minLength="2"
+                            maxLength="100"
                             required />
                     </div>
 
                     <div className="form-group">
                         <label>Số điện thoại</label>
                         <input
-                            type="text"
+                            type="tel"
                             name="phoneNumber"
                             placeholder="0123456789"
                             value={formData.phoneNumber}
                             onChange={handleChange}
+                            pattern="^(0|\+84)[0-9]{9,10}$"
+                            title="Số điện thoại phải bắt đầu bằng 0 hoặc +84 và có 10-11 số"
                             required />
                     </div>
 
@@ -89,6 +95,8 @@ const RegisterPage = () => {
                             placeholder="••••••••"
                             value={formData.password}
                             onChange={handleChange}
+                            minLength="6"
+                            title="Mật khẩu phải có ít nhất 6 ký tự"
                             required />
                     </div>
 

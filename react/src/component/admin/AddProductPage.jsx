@@ -52,27 +52,36 @@ const AddProductPage = () => {
             <form onSubmit={handleSubmit} className="product-form">
                 <h2>Add Product</h2>
                 {message && <div className="message">{message}</div>}
-                <input type="file" onChange={handleImage} />
-                <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} >
+                <input type="file" onChange={handleImage} required accept="image/*" />
+                <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
                     <option value="">Select Category</option>
                     {categories.map((cat)=>(
                         <option value={cat.id} key={cat.id}>{cat.name}</option>
                     ))}
                 </select>
-                <input type="text" 
+                <input type="text"
                 placeholder="Product name"
                 value={name}
-                onChange={(e)=> setName(e.target.value)} />
+                onChange={(e)=> setName(e.target.value)}
+                required
+                minLength="2"
+                maxLength="200" />
 
-                <textarea 
+                <textarea
                 placeholder="Description"
                 value={description}
-                onChange={(e)=> setDescription(e.target.value)}/>
+                onChange={(e)=> setDescription(e.target.value)}
+                required
+                minLength="10"
+                maxLength="2000" />
 
-                <input type="number" 
+                <input type="number"
                 placeholder="price"
                 value={price}
-                onChange={(e)=> setPrice(e.target.value)} />
+                onChange={(e)=> setPrice(e.target.value)}
+                required
+                min="0.01"
+                step="0.01" />
 
                 <button type="submit">Add Product</button>
             </form>

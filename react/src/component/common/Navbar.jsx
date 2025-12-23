@@ -37,7 +37,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <NavLink to="/">
+        <NavLink to={isAdmin ? "/admin" : "/"}>
           <img src="/phegon_mart.png" alt="Phegon Mart" />
         </NavLink>
       </div>
