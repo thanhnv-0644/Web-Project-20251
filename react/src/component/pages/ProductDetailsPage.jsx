@@ -8,7 +8,7 @@ const ProductDetailsPage = () => {
     const { productId } = useParams();
     const { cart, dispatch } = useCart();
 
-    // localStorage CHỈ có role
+
     const role = localStorage.getItem("role");
 
     const [product, setProduct] = useState(null);
@@ -30,10 +30,10 @@ const ProductDetailsPage = () => {
     useEffect(() => {
         fetchProduct();
         fetchReviews();
-        // eslint-disable-next-line
+
     }, [productId]);
 
-    /* ================= API ================= */
+    /*API */
 
     const fetchProduct = async () => {
         try {
@@ -109,7 +109,7 @@ const ProductDetailsPage = () => {
         }
     };
 
-    /* ================= CART ================= */
+    /* CART */
 
     const addToCart = () => {
         dispatch({ type: "ADD_ITEM", payload: product });
@@ -132,11 +132,11 @@ const ProductDetailsPage = () => {
 
     const cartItem = cart.find(i => i.id === product.id);
 
-    /* ================= UI ================= */
+    /* UI */
 
     return (
         <div className="product-detail-page">
-            {/* ===== PRODUCT ===== */}
+            {/* PRODUCT*/}
             <div className="product-detail">
                 <div className="product-image-section">
                     <img src={product.imageUrl} alt={product.name} />
@@ -161,7 +161,7 @@ const ProductDetailsPage = () => {
                 </div>
             </div>
 
-            {/* ===== REVIEWS ===== */}
+            {/* REVIEWS */}
             <div className="review-section">
                 <h2>Đánh giá sản phẩm</h2>
 
@@ -169,7 +169,7 @@ const ProductDetailsPage = () => {
                     ⭐ Trung bình: <strong>{averageRating.toFixed(1)}</strong> / 5
                 </p>
 
-                {/* ===== ADD REVIEW ===== */}
+                {/* ADD REVIEW */}
                 {role && (
                     <div className="add-review">
                         <h3>Viết đánh giá</h3>
@@ -201,7 +201,7 @@ const ProductDetailsPage = () => {
                     </div>
                 )}
 
-                {/* ===== REVIEW LIST ===== */}
+                {/* REVIEW LIST */}
                 <div className="review-list">
                     {reviews.length === 0 && (
                         <p className="no-review">Chưa có đánh giá nào</p>
@@ -233,7 +233,7 @@ const ProductDetailsPage = () => {
                                 </div>
                             </div>
 
-                            {/* ===== EDIT MODE ===== */}
+                            {/* EDIT MODE */}
                             {editingReviewId === review.id ? (
                                 <>
                                     <div className="rating-input">

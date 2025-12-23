@@ -68,13 +68,13 @@ public Response getReviewsByProduct(Long productId) {
                     ? auth.getName()
                     : null;
 
-    // ✅ LẤY USER 1 LẦN
+    
     User user =
             currentEmail != null
                     ? userRepo.findByEmail(currentEmail).orElse(null)
                     : null;
 
-    // ✅ BIẾN FINAL CHO LAMBDA
+    
     final Long currentUserId = user != null ? user.getId() : null;
     final boolean isAdmin =
             user != null && user.getRole() == UserRole.ADMIN;
