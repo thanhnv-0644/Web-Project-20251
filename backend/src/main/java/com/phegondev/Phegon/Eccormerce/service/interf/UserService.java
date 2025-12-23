@@ -2,6 +2,7 @@ package com.phegondev.Phegon.Eccormerce.service.interf;
 
 import com.phegondev.Phegon.Eccormerce.dto.LoginRequest;
 import com.phegondev.Phegon.Eccormerce.dto.Response;
+import com.phegondev.Phegon.Eccormerce.dto.UpdateProfileRequest;
 import com.phegondev.Phegon.Eccormerce.dto.UserDto;
 import com.phegondev.Phegon.Eccormerce.entity.User;
 
@@ -11,4 +12,5 @@ public interface UserService {
     Response getAllUsers();
     User getLoginUser();
     Response getUserInfoAndOrderHistory();
+    Response updateUserProfile(UpdateProfileRequest updateRequest);
 }

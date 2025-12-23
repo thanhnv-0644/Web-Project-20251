@@ -45,7 +45,7 @@ const ProductList = ({products}) => {
                                     <button onClick={()=> incrementItem(product)}> + </button>
                                 </div>
                             ):(
-                                <button onClick={()=> addToCart(product)}>Add To Cart</button>
+                                <button onClick={()=> addToCart(product)}>Thêm vào giỏ</button>
                             )}
                         </div>
                     )

@@ -10,6 +10,8 @@ const ProductDetailsPage = () => {
     const { productId } = useParams();
     const { cart, dispatch } = useCart();
 
+    const [user, setUser] = useState(null);
+
     const [product, setProduct] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [averageRating, setAverageRating] = useState(0);
@@ -17,11 +19,32 @@ const ProductDetailsPage = () => {
     const [rating, setRating] = useState(5);
     const [content, setContent] = useState("");
 
+    const [editingReviewId, setEditingReviewId] = useState(null);
+    const [editContent, setEditContent] = useState("");
+    const [editRating, setEditRating] = useState(5);
+
+    const isAdminReview = (review) => review.role === 0;
+    const isOwner = (review) => {
+        return user && review.user_id === user.id;
+    };
+
+    const isAdmin = user?.role === "ADMIN";
+
     useEffect(() => {
         fetchProduct();
         fetchReviews();
-        // eslint-disable-next-line
+        fetchUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productId]);
+
+    const fetchUser = async () => {
+        try {
+            const res = await ApiService.getLoggedInUserInfo();
+            setUser(res.user);
+        } catch {
+            setUser(null);
+        }
+    };
 
     const fetchProduct = async () => {
         try {
@@ -39,25 +62,6 @@ const ProductDetailsPage = () => {
             setAverageRating(response.averageRating || 0);
         } catch (error) {
             console.log(error);
-        }
-    };
-
-    const addToCart = () => {
-        if (product) {
-            dispatch({ type: "ADD_ITEM", payload: product });
-        }
-    };
-
-    const incrementItem = () => {
-        dispatch({ type: "INCREMENT_ITEM", payload: product });
-    };
-
-    const decrementItem = () => {
-        const cartItem = cart.find(item => item.id === product.id);
-        if (cartItem.quantity > 1) {
-            dispatch({ type: "DECREMENT_ITEM", payload: product });
-        } else {
-            dispatch({ type: "REMOVE_ITEM", payload: product });
         }
     };
 
@@ -81,8 +85,61 @@ const ProductDetailsPage = () => {
         }
     };
 
+    const deleteReview = async (reviewId) => {
+        if (!window.confirm("Bạn có chắc muốn xoá đánh giá này?")) return;
+        try {
+            await ApiService.deleteReview(reviewId);
+            fetchReviews();
+        } catch {
+            alert("Bạn không có quyền xoá đánh giá này");
+        }
+    };
+
+    const startEdit = (review) => {
+        setEditingReviewId(review.id);
+        setEditContent(review.content);
+        setEditRating(review.rating);
+    };
+
+    const submitEdit = async (reviewId) => {
+        if (!editContent.trim()) {
+            alert("Nội dung không được để trống");
+            return;
+        }
+
+        try {
+            await ApiService.updateReview(reviewId, {
+                rating: editRating,
+                content: editContent
+            });
+            setEditingReviewId(null);
+            fetchReviews();
+        } catch {
+            alert("Bạn không có quyền chỉnh sửa đánh giá này");
+        }
+    };
+
+    const addToCart = () => {
+        if (product) {
+            dispatch({ type: "ADD_ITEM", payload: product });
+        }
+    };
+
+    const incrementItem = () => {
+        dispatch({ type: "INCREMENT_ITEM", payload: product });
+    };
+
+    const decrementItem = () => {
+        const cartItem = cart.find(item => item.id === product.id);
+        if (cartItem.quantity > 1) {
+            dispatch({ type: "DECREMENT_ITEM", payload: product });
+        } else {
+            dispatch({ type: "REMOVE_ITEM", payload: product });
+        }
+    };
+
     if (!product) {
-        return <p>Đang tải thông tin sản phẩm...</p>;
+        return <div className="loading-container"><p>Đang tải thông tin sản phẩm...</p></div>;
     }
 
     const cartItem = cart.find(item => item.id === product.id);
@@ -125,36 +182,38 @@ const ProductDetailsPage = () => {
                 </p>
 
                 {/* ===== ADD REVIEW ===== */}
-                <div className="add-review">
-                    <h3>Viết đánh giá</h3>
+                {user && (
+                    <div className="add-review">
+                        <h3>Viết đánh giá</h3>
 
-                    {/* STAR RATING INPUT */}
-                    <div className="rating-input">
-                        {[1, 2, 3, 4, 5].map(star => (
-                            <span
-                                key={star}
-                                className={star <= rating ? "active" : ""}
-                                onClick={() => setRating(star)}
-                            >
-                                ★
+                        {/* STAR RATING INPUT */}
+                        <div className="rating-input">
+                            {[1, 2, 3, 4, 5].map(star => (
+                                <span
+                                    key={star}
+                                    className={star <= rating ? "active" : ""}
+                                    onClick={() => setRating(star)}
+                                >
+                                    ★
                                 </span>
                             ))}
+                        </div>
+
+                        <textarea
+                            placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..."
+                            value={content}
+                            onChange={e => setContent(e.target.value)}
+                        />
+
+                        <button
+                            type="button"
+                            className="submit-review-btn"
+                            onClick={submitReview}
+                        >
+                            Gửi đánh giá
+                        </button>
                     </div>
-
-                    <textarea
-                        placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..."
-                        value={content}
-                        onChange={e => setContent(e.target.value)}
-                    />
-
-                    <button
-                        type="button"
-                        className="submit-review-btn"
-                        onClick={submitReview}
-                    >
-                        Gửi đánh giá
-                    </button>
-                </div>
+                )}
 
                 {/* ===== REVIEW LIST ===== */}
                 <div className="review-list">
@@ -163,7 +222,10 @@ const ProductDetailsPage = () => {
                     )}
 
                     {reviews.map(review => (
-                        <div key={review.id} className="review-item">
+                        <div 
+                            key={review.id} 
+                            className={`review-item ${isAdminReview(review) ? "admin-review" : ""}`}
+                        >
                             <div className="review-header">
                                 <div className="review-user">
                                     <div className="review-avatar">
@@ -172,9 +234,12 @@ const ProductDetailsPage = () => {
                                     <div>
                                         <div className="review-username">
                                             {review.userName}
+                                            {isAdminReview(review) && (
+                                                <span className="admin-badge">ADMIN</span>
+                                            )}
                                         </div>
                                         <div className="review-date">
-                                            {new Date(review.createdAt).toLocaleDateString()}
+                                            {new Date(review.createdAt).toLocaleDateString('vi-VN')}
                                         </div>
                                     </div>
                                 </div>
@@ -185,9 +250,52 @@ const ProductDetailsPage = () => {
                                 </div>
                             </div>
 
-                            <p className="review-content">
-                                {review.content}
-                            </p>
+                            {editingReviewId === review.id ? (
+                                <>
+                                    <div className="rating-input">
+                                        {[1, 2, 3, 4, 5].map(star => (
+                                            <span
+                                                key={star}
+                                                className={star <= editRating ? "active" : ""}
+                                                onClick={() => setEditRating(star)}
+                                            >
+                                                ★
+                                            </span>
+                                        ))}
+                                    </div>
+                                    <textarea
+                                        value={editContent}
+                                        onChange={e => setEditContent(e.target.value)}
+                                    />
+                                    <div className="review-actions">
+                                        <button className="save-btn" onClick={() => submitEdit(review.id)}>Lưu</button>
+                                        <button className="cancel-btn" onClick={() => setEditingReviewId(null)}>Huỷ</button>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <p className="review-content">{review.content}</p>
+
+                                    {(isOwner(review) || isAdmin) && (
+                                        <div className="review-actions">
+                                            {isOwner(review) && (
+                                                <button
+                                                    className="edit-btn"
+                                                    onClick={() => startEdit(review)}
+                                                >
+                                                    Sửa
+                                                </button>
+                                            )}
+                                            <button
+                                                className="delete-btn"
+                                                onClick={() => deleteReview(review.id)}
+                                            >
+                                                Xoá
+                                            </button>
+                                        </div>
+                                    )}
+                                </>
+                            )}
                         </div>
                     ))}
                 </div>

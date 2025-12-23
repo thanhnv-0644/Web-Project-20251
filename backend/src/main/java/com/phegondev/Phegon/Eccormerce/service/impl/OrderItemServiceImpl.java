@@ -55,7 +55,7 @@ public class OrderItemServiceImpl implements OrderItemService {
             orderItem.setProduct(product);
             orderItem.setQuantity(orderItemRequest.getQuantity());
             orderItem.setPrice(product.getPrice().multiply(BigDecimal.valueOf(orderItemRequest.getQuantity()))); //set price according to the quantity
-            orderItem.setStatus(OrderStatus.PENDING);
+            // Status không còn được set ở OrderItem, chỉ ở Order level
             orderItem.setUser(user);
             return orderItem;
 
@@ -70,30 +70,30 @@ public class OrderItemServiceImpl implements OrderItemService {
         Order order = new Order();
         order.setOrderItemList(orderItems);
         order.setTotalPrice(totalPrice);
+        order.setStatus(OrderStatus.PENDING); // Set order status
+        order.setUser(user); // Set order user
 
         //set the order reference in each orderitem
         orderItems.forEach(orderItem -> orderItem.setOrder(order));
 
-        orderRepo.save(order);
+        Order savedOrder = orderRepo.save(order);
 
         return Response.builder()
                 .status(200)
                 .message("Order was successfully placed")
+                .orderId(savedOrder.getId()) // Trả về orderId
                 .build();
 
     }
 
     @Override
+    @Deprecated
     public Response updateOrderItemStatus(Long orderItemId, String status) {
-        OrderItem orderItem = orderItemRepo.findById(orderItemId)
-                .orElseThrow(()-> new NotFoundException("Order Item not found"));
-
-        orderItem.setStatus(OrderStatus.valueOf(status.toUpperCase()));
-        orderItemRepo.save(orderItem);
-        return Response.builder()
-                .status(200)
-                .message("Order status updated successfully")
-                .build();
+        // Method deprecated: Status giờ được quản lý ở Order level
+        // Sử dụng OrderService.updateOrderStatus() thay thế
+        throw new UnsupportedOperationException(
+            "OrderItem status đã bị xóa. Vui lòng sử dụng OrderService.updateOrderStatus(orderId, status)"
+        );
     }
 
     @Override

@@ -20,13 +20,11 @@ public class AddressDto {
 
     private Long id;
 
-    private String street;
-    private String city;
-    private String state;
-    private String zipCode;
-    private String country;
+    private String street; // Địa chỉ cụ thể
+    private String ward;   // Phường
+    private String city;   // Thành phố
 
     private UserDto user;
 
-    private  LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 }

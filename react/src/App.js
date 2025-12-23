@@ -12,6 +12,7 @@ import CartPage from './component/pages/CartPage';
 import RegisterPage from './component/pages/RegisterPage';
 import LoginPage from './component/pages/LoginPage';
 import ProfilePage from './component/pages/ProfilePage';
+import EditProfilePage from './component/pages/EditProfilePage';
 import AddressPage from './component/pages/AddressPage';
 import AdminPage from './component/admin/AdminPage';
 import AdminCategoryPage from './component/admin/AdminCategoryPage';
@@ -23,6 +24,11 @@ import EditProductPage from './component/admin/EditProductPage';
 import AdminOrdersPage from './component/admin/AdminOrderPage';
 import AdminOrderDetailsPage from './component/admin/AdminOrderDetailsPage';
 import DashboardPage from "./component/admin/DashboardPage";
+import PaymentPage from './component/pages/PaymentPage';
+import PaymentSuccessPage from './component/pages/PaymentSuccessPage';
+import AdminPaymentManagement from './component/admin/AdminPaymentManagement';
+import OrderDetailsPage from './component/pages/OrderDetailsPage';
+
 function App() {
   return (
     <BrowserRouter>
@@ -40,9 +46,16 @@ function App() {
           <Route path='/login' element={<LoginPage/>}/>
 
           <Route path='/profile' element={<ProtectedRoute element={<ProfilePage/>} />} />
+          <Route path='/edit-profile' element={<ProtectedRoute element={<EditProfilePage/>} />} />
           <Route path='/add-address' element={<ProtectedRoute element={<AddressPage/>} />} />
           <Route path='/edit-address' element={<ProtectedRoute element={<AddressPage/>} />} />
 
+          {/* PAYMENT ROUTES */}
+          <Route path='/payment/:orderId' element={<ProtectedRoute element={<PaymentPage/>} />} />
+          <Route path='/payment-success/:orderId' element={<ProtectedRoute element={<PaymentSuccessPage/>} />} />
+
+          {/* ORDER DETAILS - User & Admin share the same page */}
+          <Route path='/order-details/:orderId' element={<ProtectedRoute element={<OrderDetailsPage/>} />} />
 
           <Route path='/admin' element={<AdminRoute element={<AdminPage/>} />} />
           <Route path='/admin/categories' element={<AdminRoute element={<AdminCategoryPage/>} />} />
@@ -51,9 +64,10 @@ function App() {
           <Route path='/admin/products' element={<AdminRoute element={<AdminProductPage/>} />} />
           <Route path='/admin/add-product' element={<AdminRoute element={<AddProductPage/>} />} />
           <Route path='/admin/edit-product/:productId' element={<AdminRoute element={<EditProductPage/>} />} />
-          <Route path="/admin/dashboard" element={<DashboardPage />} />
+          <Route path="/admin/dashboard" element={<AdminRoute element={<DashboardPage />} />} />
           <Route path='/admin/orders' element={<AdminRoute element={<AdminOrdersPage/>} />} />
-          <Route path='/admin/order-details/:itemId' element={<AdminRoute element={<AdminOrderDetailsPage/>} />} />
+          <Route path='/admin/order-details/:orderId' element={<AdminRoute element={<OrderDetailsPage/>} />} />
+          <Route path='/admin/payments' element={<AdminRoute element={<AdminPaymentManagement/>} />} />
 
           
         </Routes>

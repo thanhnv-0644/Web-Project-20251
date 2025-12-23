@@ -2,6 +2,7 @@ package com.phegondev.Phegon.Eccormerce.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.phegondev.Phegon.Eccormerce.dto.CloudinaryUploadResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,11 +28,11 @@ public class CloudinaryService {
     private String apiSecret;
 
     /**
-     * Upload ảnh lên Cloudinary và trả về URL
+     * Upload ảnh lên Cloudinary và trả về đầy đủ thông tin (URL + publicId)
      * @param photo - file ảnh từ MultipartFile
-     * @return URL của ảnh trên Cloudinary
+     * @return CloudinaryUploadResult chứa URL, publicId, fileSize, format
      */
-    public String saveImageToCloudinary(MultipartFile photo) {
+    public CloudinaryUploadResult uploadImageWithDetails(MultipartFile photo) {
         try {
             // Tạo Cloudinary instance với credentials
             Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
@@ -52,11 +53,21 @@ public class CloudinaryService {
                             "resource_type", "auto" // Tự động detect loại file
                     ));
 
-            // Lấy URL của ảnh đã upload
+            // Lấy thông tin từ kết quả upload
             String imageUrl = (String) uploadResult.get("secure_url");
-            log.info("Image uploaded successfully to Cloudinary: {}", imageUrl);
+            String fullPublicId = (String) uploadResult.get("public_id"); // phegon-ecommerce/uuid
+            Long bytes = uploadResult.get("bytes") != null ? 
+                    Long.valueOf(uploadResult.get("bytes").toString()) : 0L;
+            String format = (String) uploadResult.get("format");
 
-            return imageUrl;
+            log.info("Image uploaded successfully to Cloudinary: {} (publicId: {})", imageUrl, fullPublicId);
+
+            return CloudinaryUploadResult.builder()
+                    .imageUrl(imageUrl)
+                    .publicId(fullPublicId)
+                    .fileSize(bytes)
+                    .format(format)
+                    .build();
 
         } catch (IOException e) {
             log.error("Failed to upload image to Cloudinary: {}", e.getMessage());
@@ -65,8 +76,19 @@ public class CloudinaryService {
     }
 
     /**
-     * Xóa ảnh từ Cloudinary (optional - nếu bạn cần)
-     * @param publicId - ID của ảnh trên Cloudinary
+     * Upload ảnh lên Cloudinary và chỉ trả về URL (backward compatibility)
+     * Method này giữ lại để không phá vỡ code cũ (ProductServiceImpl đang dùng)
+     * 
+     * @param photo - file ảnh từ MultipartFile
+     * @return URL của ảnh trên Cloudinary
+     */
+    public String saveImageToCloudinary(MultipartFile photo) {
+        return uploadImageWithDetails(photo).getImageUrl();
+    }
+
+    /**
+     * Xóa ảnh từ Cloudinary bằng publicId
+     * @param publicId - ID của ảnh trên Cloudinary (ví dụ: phegon-ecommerce/abc123)
      */
     public void deleteImageFromCloudinary(String publicId) {
         try {
@@ -85,4 +107,3 @@ public class CloudinaryService {
         }
     }
 }
-

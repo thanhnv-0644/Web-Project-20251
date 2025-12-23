@@ -22,7 +22,7 @@ const CategoryListPage = () => {
 
         } catch (err) {
 
-            setError(err.response?.data?.message || err.message || 'Unable to fetch categories')
+            setError(err.response?.data?.message || err.message || 'Không thể tải danh mục')
 
         }
     }
@@ -37,7 +37,7 @@ const CategoryListPage = () => {
                 <p className="error-message">{error}</p>
             ):(
                 <div>
-                    <h2>Categories</h2>
+                    <h2>Danh Mục</h2>
                     <ul>
                         {categories.map((category)=>(
                             <li key={category.id}>

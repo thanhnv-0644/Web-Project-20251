@@ -1,12 +1,9 @@
-body {
-  background: #0b1d2a;
-  
-}
+/* Đã loại bỏ background đen của body */
 
 .snowflake {
   position: fixed;
   top: -10px;
-  color: white;
+  color: #667eea;
   font-size: 1em;
   user-select: none;
   pointer-events: none;

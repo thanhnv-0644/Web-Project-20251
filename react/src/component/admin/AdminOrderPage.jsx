@@ -34,19 +34,20 @@ const AdminOrdersPage = () => {
         try {
             let response;
             if(searchStatus){
-                response = await ApiService.getAllOrderItemsByStatus(searchStatus);
+                response = await ApiService.getOrdersByStatus(searchStatus);
             }else{
-                response = await ApiService.getAllOrders();
+                response = await ApiService.getAllOrdersNew();
             }
-            const orderList = response.orderItemList || [];
-
+            const orderList = response.orderList || [];
+            
+            // Backend đã sort DESC rồi, giữ nguyên thứ tự (mới nhất -> cũ nhất)
             setTotalPages(Math.ceil(orderList.length/itemsPerPage));
             setOrders(orderList);
             setFilteredOrders(orderList.slice((currentPage -1) * itemsPerPage, currentPage * itemsPerPage));
 
 
         } catch (error) {
-            setError(error.response?.data?.message || error.message || 'unable to fetch orders')
+            setError(error.response?.data?.message || error.message || 'Không thể tải danh sách đơn hàng')
             setTimeout(()=>{
                 setError('')
             }, 3000)
@@ -59,10 +60,12 @@ const AdminOrdersPage = () => {
         setCurrentPage(1);
 
         if (filterValue) {
+            // Filter giữ nguyên thứ tự từ backend (mới nhất -> cũ nhất)
             const filtered = orders.filter(order => order.status === filterValue);
             setFilteredOrders(filtered.slice(0, itemsPerPage));
             setTotalPages(Math.ceil(filtered.length / itemsPerPage));
         }else{
+            // Không filter, hiển thị tất cả theo thứ tự từ backend
             setFilteredOrders(orders.slice(0, itemsPerPage));
             setTotalPages(Math.ceil(orders.length / itemsPerPage));
         }
@@ -75,28 +78,28 @@ const AdminOrdersPage = () => {
     }
 
     const handleOrderDetails = (id) => {
-        navigate(`/admin/order-details/${id}`)
+        navigate(`/admin/order-details/${id}`) // Sẽ tạo trang mới
     }
 
 
     return (
         <div className="admin-orders-page">
-            <h2>Orders</h2>
+            <h2>Đơn Hàng</h2>
             {error && <p className="error-message">{error}</p>}
             <div className="filter-container">
                 <div className="statusFilter">
-                    <label >Filter By Status</label>
+                    <label >Lọc theo trạng thái</label>
                     <select value={statusFilter} onChange={handleFilterChange}>
-                        <option value="">All</option>
+                        <option value="">Tất cả</option>
                         {OrderStatus.map(status=>(
                             <option key={status} value={status}>{status}</option>
                         ))}
                     </select>
                 </div>
                 <div className="searchStatus">
-                <label>Search By Status</label>
+                <label>Tìm theo trạng thái</label>
                     <select value={searchStatus} onChange={handleSearchStatusChange}>
-                        <option value="">All</option>
+                        <option value="">Tất cả</option>
                         {OrderStatus.map(status=>(
                             <option key={status} value={status}>{status}</option>
                         ))}
@@ -108,12 +111,12 @@ const AdminOrdersPage = () => {
             <table className="orders-table">
                 <thead>
                     <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Status</th>
-                        <th>Price</th>
-                        <th>Date Ordered</th>
-                        <th>Actions</th>
+                        <th>Mã đơn hàng</th>
+                        <th>Khách hàng</th>
+                        <th>Trạng thái</th>
+                        <th>Giá</th>
+                        <th>Ngày đặt</th>
+                        <th>Thao tác</th>
                     </tr>
                 </thead>
 
@@ -121,12 +124,12 @@ const AdminOrdersPage = () => {
                     {filteredOrders.map(order => (
                         <tr key={order.id}>
                             <td>{order.id}</td>
-                            <td>{order.user.name}</td>
+                            <td>{order.user?.name || 'N/A'}</td>
                             <td>{order.status}</td>
-                            <td>${order.price.toFixed(2)}</td>
-                            <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                            <td>${order.totalPrice?.toFixed(2) || '0.00'}</td>
+                            <td>{new Date(order.createdAt).toLocaleDateString('vi-VN')}</td>
                             <td>
-                                <button onClick={()=> handleOrderDetails(order.id)}>Details</button>
+                                <button onClick={()=> handleOrderDetails(order.id)}>Chi tiết</button>
                             </td>
                         </tr>
                     ))}

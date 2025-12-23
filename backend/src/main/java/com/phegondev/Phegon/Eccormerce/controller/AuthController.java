@@ -5,6 +5,7 @@ import com.phegondev.Phegon.Eccormerce.dto.LoginRequest;
 import com.phegondev.Phegon.Eccormerce.dto.Response;
 import com.phegondev.Phegon.Eccormerce.dto.UserDto;
 import com.phegondev.Phegon.Eccormerce.service.interf.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,12 +21,12 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Response> registerUser(@RequestBody UserDto registrationRequest){
+    public ResponseEntity<Response> registerUser(@Valid @RequestBody UserDto registrationRequest){
         System.out.println(registrationRequest);
         return ResponseEntity.ok(userService.registerUser(registrationRequest));
     }
     @PostMapping("/login")
-    public ResponseEntity<Response> loginUser(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<Response> loginUser(@Valid @RequestBody LoginRequest loginRequest){
         return ResponseEntity.ok(userService.loginUser(loginRequest));
     }
 }

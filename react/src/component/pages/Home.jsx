@@ -59,7 +59,7 @@ const Home = () => {
                 setProducts(allProducts.slice((currentPage -1) * itemsPerPage, currentPage * itemsPerPage));
                
             }catch(error){
-                setError(error.response?.data?.message || error.message || 'unable to fetch products')
+                setError(error.response?.data?.message || error.message || 'Không thể tải danh sách sản phẩm')
             }
         }
 

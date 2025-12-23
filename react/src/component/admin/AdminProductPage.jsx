@@ -7,20 +7,39 @@ import ApiService from "../../service/ApiService";
 const AdminProductPage = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [error, setError] = useState(null);
     const itemsPerPage = 10;
 
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async() => {
+        try {
+            const response = await ApiService.getAllCategory();
+            setCategories(response.categoryList || []);
+        } catch (error) {
+            console.error('Không thể tải danh sách danh mục:', error);
+        }
+    }
 
     const fetchProducts = async() => {
         try {
-            const response = await ApiService.getAllProducts();
+            let response;
+            if (selectedCategory) {
+                response = await ApiService.getAllProductsByCategoryId(selectedCategory);
+            } else {
+                response = await ApiService.getAllProducts();
+            }
             const productList = response.productList || [];
             setTotalPages(Math.ceil(productList.length/itemsPerPage));
             setProducts(productList.slice((currentPage -1) * itemsPerPage, currentPage * itemsPerPage));
         } catch (error) {
-            setError(error.response?.data?.message || error.message || 'unable to fetch products')
+            setError(error.response?.data?.message || error.message || 'Không thể tải danh sách sản phẩm')
             
         }
     }
@@ -28,19 +47,24 @@ const AdminProductPage = () => {
     useEffect(()=>{
         fetchProducts();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPage]);
+    }, [currentPage, selectedCategory]);
+
+    const handleCategoryChange = (e) => {
+        setSelectedCategory(e.target.value);
+        setCurrentPage(1); // Reset về trang 1 khi đổi category
+    }
 
     const handleEdit = async (id) => {
         navigate(`/admin/edit-product/${id}`)
     }
     const handleDelete = async(id) => {
-        const confirmed = window.confirm("Are your sure you want to delete this product? ")
+        const confirmed = window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")
         if(confirmed){
             try {
                 await ApiService.deleteProduct(id);
                 fetchProducts();
             } catch (error) {
-                setError(error.response?.data?.message || error.message || 'unable to delete product')
+                setError(error.response?.data?.message || error.message || 'Không thể xóa sản phẩm')
             }
         }
     }
@@ -51,16 +75,38 @@ const AdminProductPage = () => {
                 <p className="error-message">{error}</p>
             ): (
                 <div>
-                    <h2>Products</h2>
-                    <button className="product-btn" onClick={()=> {navigate('/admin/add-product'); }}>Add product</button>
+                    <h2>Sản Phẩm</h2>
+                    <div className="product-actions">
+                        <button className="product-btn" onClick={()=> {navigate('/admin/add-product'); }}>Thêm sản phẩm</button>
+                        <div className="category-filter">
+                            <label htmlFor="category-select">Lọc theo danh mục:</label>
+                            <select 
+                                id="category-select"
+                                value={selectedCategory} 
+                                onChange={handleCategoryChange}
+                                className="category-select"
+                            >
+                                <option value="">Tất cả danh mục</option>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.id}>
+                                        {category.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
                     <ul>
-                        {products.map((product)=>(
-                            <li key={product.id}>
-                                <span>{product.name}</span>
-                                <button className="product-btn" onClick={()=> handleEdit(product.id)}>Edit</button>
-                                <button className="product-btn-delete" onClick={()=> handleDelete(product.id)}>Delete</button>
-                            </li>
-                        ))}
+                        {products.length > 0 ? (
+                            products.map((product)=>(
+                                <li key={product.id}>
+                                    <span>{product.name}</span>
+                                    <button className="product-btn" onClick={()=> handleEdit(product.id)}>Sửa</button>
+                                    <button className="product-btn-delete" onClick={()=> handleDelete(product.id)}>Xóa</button>
+                                </li>
+                            ))
+                        ) : (
+                            <p className="no-products">Không có sản phẩm nào trong danh mục này</p>
+                        )}
                     </ul>
                     <Pagination
                     currentPage={currentPage}

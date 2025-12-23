@@ -2,6 +2,7 @@ package com.phegondev.Phegon.Eccormerce.service.impl;
 
 import com.phegondev.Phegon.Eccormerce.dto.LoginRequest;
 import com.phegondev.Phegon.Eccormerce.dto.Response;
+import com.phegondev.Phegon.Eccormerce.dto.UpdateProfileRequest;
 import com.phegondev.Phegon.Eccormerce.dto.UserDto;
 import com.phegondev.Phegon.Eccormerce.entity.User;
 import com.phegondev.Phegon.Eccormerce.enums.UserRole;
@@ -112,6 +113,32 @@ public class UserServiceImpl implements UserService {
 
         return Response.builder()
                 .status(200)
+                .user(userDto)
+                .build();
+    }
+
+    @Override
+    public Response updateUserProfile(UpdateProfileRequest updateRequest) {
+        User user = getLoginUser();
+        
+        // Kiểm tra email đã tồn tại chưa (nếu user đổi email)
+        if (!user.getEmail().equals(updateRequest.getEmail())) {
+            userRepo.findByEmail(updateRequest.getEmail()).ifPresent(existingUser -> {
+                throw new IllegalArgumentException("Email này đã được sử dụng bởi tài khoản khác");
+            });
+        }
+        
+        // Cập nhật thông tin
+        user.setName(updateRequest.getName());
+        user.setEmail(updateRequest.getEmail());
+        user.setPhoneNumber(updateRequest.getPhoneNumber());
+        
+        User updatedUser = userRepo.save(user);
+        UserDto userDto = entityDtoMapper.mapUserToDtoBasic(updatedUser);
+        
+        return Response.builder()
+                .status(200)
+                .message("Cập nhật thông tin cá nhân thành công")
                 .user(userDto)
                 .build();
     }

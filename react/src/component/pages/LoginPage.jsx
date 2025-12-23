@@ -25,7 +25,7 @@ const LoginPage = () => {
         try {
             const response = await ApiService.loginUser(formData);
             if (response.status === 200) {
-                setMessage("User Successfully Loged in");
+                setMessage("Đăng nhập thành công");
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('role', response.role);
                 setTimeout(() => {
@@ -33,7 +33,7 @@ const LoginPage = () => {
                 }, 4000)
             }
         } catch (error) {
-            setMessage(error.response?.data.message || error.message || "unable to Login a user");
+            setMessage(error.response?.data.message || error.message || "Không thể đăng nhập");
         }
     }
 
