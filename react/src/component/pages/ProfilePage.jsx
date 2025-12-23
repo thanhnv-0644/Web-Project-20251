@@ -12,7 +12,7 @@ const ProfilePage = () => {
     const itemsPerPage = 5;
     const navigate = useNavigate();
     const isAdmin = ApiService.isAdmin();
-
+    console.log(userInfo);
 
     useEffect(() => {
 

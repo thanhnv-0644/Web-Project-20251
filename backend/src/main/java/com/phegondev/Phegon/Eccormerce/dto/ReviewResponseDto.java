@@ -14,7 +14,7 @@ public class ReviewResponseDto {
     private Long id;
     private String content;
     private int rating;
-
+    private long user_id;
     private String userName;
     private LocalDateTime createdAt;
     private int role;

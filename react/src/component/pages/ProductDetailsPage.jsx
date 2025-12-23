@@ -8,8 +8,7 @@ const ProductDetailsPage = () => {
     const { productId } = useParams();
     const { cart, dispatch } = useCart();
 
-
-    const role = localStorage.getItem("role");
+    const [user, setUser] = useState(null);
 
     const [product, setProduct] = useState(null);
     const [reviews, setReviews] = useState([]);
@@ -22,18 +21,32 @@ const ProductDetailsPage = () => {
     const [editContent, setEditContent] = useState("");
     const [editRating, setEditRating] = useState(5);
 
-    const isAdminReview = (review) => {
-    return review.role === 0 ;
+    const isAdminReview = (review) => review.role === 0;
+    const isOwner = (review) => {
+    return user && review.user_id === user.id;
     };
 
+    const isAdmin = user?.role === "ADMIN";
 
-    useEffect(() => {
-        fetchProduct();
-        fetchReviews();
+    
+useEffect(() => {
+    fetchProduct();
+    fetchReviews();
+    fetchUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [productId]);
 
-    }, [productId]);
 
-    /*API */
+    /*  API */
+
+    const fetchUser = async () => {
+        try {
+            const res = await ApiService.getLoggedInUserInfo();
+            setUser(res.user);
+        } catch {
+            setUser(null);
+        }
+    };
 
     const fetchProduct = async () => {
         try {
@@ -61,26 +74,21 @@ const ProductDetailsPage = () => {
         }
 
         try {
-            await ApiService.addReview({
-                productId,
-                rating,
-                content
-            });
+            await ApiService.addReview({ productId, rating, content });
             setContent("");
             setRating(5);
             fetchReviews();
-        } catch (err) {
+        } catch {
             alert("Bạn cần đăng nhập để đánh giá");
         }
     };
 
     const deleteReview = async (reviewId) => {
         if (!window.confirm("Bạn có chắc muốn xoá đánh giá này?")) return;
-
         try {
             await ApiService.deleteReview(reviewId);
             fetchReviews();
-        } catch (err) {
+        } catch {
             alert("Bạn không có quyền xoá đánh giá này");
         }
     };
@@ -104,7 +112,7 @@ const ProductDetailsPage = () => {
             });
             setEditingReviewId(null);
             fetchReviews();
-        } catch (err) {
+        } catch {
             alert("Bạn không có quyền chỉnh sửa đánh giá này");
         }
     };
@@ -132,11 +140,12 @@ const ProductDetailsPage = () => {
 
     const cartItem = cart.find(i => i.id === product.id);
 
-    /* UI */
+    /*UI */
 
     return (
         <div className="product-detail-page">
-            {/* PRODUCT*/}
+
+            {/* PRODUCT */}
             <div className="product-detail">
                 <div className="product-image-section">
                     <img src={product.imageUrl} alt={product.name} />
@@ -170,12 +179,12 @@ const ProductDetailsPage = () => {
                 </p>
 
                 {/* ADD REVIEW */}
-                {role && (
+                {user && (
                     <div className="add-review">
                         <h3>Viết đánh giá</h3>
 
                         <div className="rating-input">
-                            {[1, 2, 3, 4, 5].map(star => (
+                            {[1,2,3,4,5].map(star => (
                                 <span
                                     key={star}
                                     className={star <= rating ? "active" : ""}
@@ -192,10 +201,7 @@ const ProductDetailsPage = () => {
                             onChange={e => setContent(e.target.value)}
                         />
 
-                        <button
-                            className="submit-review-btn"
-                            onClick={submitReview}
-                        >
+                        <button className="submit-review-btn" onClick={submitReview}>
                             Gửi đánh giá
                         </button>
                     </div>
@@ -203,28 +209,17 @@ const ProductDetailsPage = () => {
 
                 {/* REVIEW LIST */}
                 <div className="review-list">
-                    {reviews.length === 0 && (
-                        <p className="no-review">Chưa có đánh giá nào</p>
-                    )}
-
                     {reviews.map(review => (
-                        <div key={review.id} className={`review-item ${isAdminReview(review) ? "admin-review" : ""}`}>
+                        <div
+                            key={review.id}
+                            className={`review-item ${isAdminReview(review) ? "admin-review" : ""}`}
+                        >
                             <div className="review-header">
-                                <div className="review-user">
-                                    <div className="review-avatar">
-                                        {review.userName?.charAt(0).toUpperCase()}
-                                    </div>
-                                    <div>
-                                        <div className="review-username">
-                                            {review.userName}
-                                            {isAdminReview(review) && (
-                                                <span className="admin-badge">ADMIN</span>
-                                            )}
-                                        </div>
-                                        <div className="review-date">
-                                            {new Date(review.createdAt).toLocaleDateString()}
-                                        </div>
-                                    </div>
+                                <div className="review-username">
+                                    {review.userName}
+                                    {isAdminReview(review) && (
+                                        <span className="admin-badge">ADMIN</span>
+                                    )}
                                 </div>
 
                                 <div className="review-rating">
@@ -233,54 +228,42 @@ const ProductDetailsPage = () => {
                                 </div>
                             </div>
 
-                            {/* EDIT MODE */}
                             {editingReviewId === review.id ? (
                                 <>
-                                    <div className="rating-input">
-                                        {[1, 2, 3, 4, 5].map(star => (
-                                            <span
-                                                key={star}
-                                                className={star <= editRating ? "active" : ""}
-                                                onClick={() => setEditRating(star)}
-                                            >
-                                                ★
-                                            </span>
-                                        ))}
-                                    </div>
-
                                     <textarea
                                         value={editContent}
                                         onChange={e => setEditContent(e.target.value)}
                                     />
-
                                     <div className="review-actions">
-                                        <button onClick={() => submitEdit(review.id)}>
-                                            Lưu
-                                        </button>
-                                        <button onClick={() => setEditingReviewId(null)}>
-                                            Huỷ
-                                        </button>
+                                        <button onClick={() => submitEdit(review.id)}>Lưu</button>
+                                        <button onClick={() => setEditingReviewId(null)}>Huỷ</button>
                                     </div>
                                 </>
                             ) : (
                                 <>
-                                    <p className="review-content">
-                                        {review.content}
-                                    </p>
+                                    <p className="review-content">{review.content}</p>
 
-                                    {role && (
+                                    {(isOwner(review) || isAdmin) && (
                                         <div className="review-actions">
-                                            <button className="review-actions button:first-child" onClick={() => deleteReview(review.id)}>
-                                                Xoá
-                                            </button>
 
-                                    {(role === "USER") && (
-                                            <button className="review-actions button:last-child"onClick={() => startEdit(review)}>
-                                                Sửa
+                                            {isOwner(review) && (
+                                            <button
+                                                className="edit-btn"
+                                                onClick={() => startEdit(review)}
+                                            >
+                                            Sửa
                                             </button>
-                                        )}
-                                    </div>
-                                )}      
+                                            )}
+
+                                             <button
+                                             className="delete-btn"
+                                                onClick={() => deleteReview(review.id)}
+                                            >
+                                                Xoá
+                                            </button>                       
+                                             </div>
+                                    )}
+
                                 </>
                             )}
                         </div>

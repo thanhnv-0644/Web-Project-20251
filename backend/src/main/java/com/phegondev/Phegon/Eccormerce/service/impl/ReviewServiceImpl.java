@@ -95,6 +95,7 @@ public Response getReviewsByProduct(Long productId) {
                                 r.getId(),
                                 r.getContent(),
                                 r.getRating(),
+                                r.getUser().getId(),
                                 r.getUser().getName(),
                                 r.getCreatedAt(),
                                 r.getUser().getRole().getValue(),
