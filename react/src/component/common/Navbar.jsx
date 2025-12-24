@@ -37,7 +37,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <NavLink to={isAdmin ? "/admin" : "/"}>
+        <NavLink to={isAdmin ? "/" : "/"}>
           <img src="/phegon_mart.png" alt="Phegon Mart" />
         </NavLink>
       </div>
@@ -59,6 +59,7 @@ const Navbar = () => {
         {(isAdminRoute || isProfileRoute) && isAdmin ? (
           // Links gọn cho Admin khi ở trang admin hoặc profile
           <>
+            <NavLink to="/">Home</NavLink>
             <NavLink to="/profile">My Account</NavLink>
             <NavLink to="/admin">Admin</NavLink>
             <NavLink onClick={handleLogout}>Logout</NavLink>
@@ -70,7 +71,7 @@ const Navbar = () => {
             {isAuthenticated && <NavLink to="/profile">My Account</NavLink>}
             {isAdmin && <NavLink to="/admin">Admin</NavLink>}
             {!isAuthenticated && <NavLink to="/login">Login</NavLink>}
-            <NavLink to="/cart">Cart</NavLink>
+            {!isAdmin && <NavLink to="/cart">Cart</NavLink>}
             {isAuthenticated && <NavLink onClick={handleLogout}>Logout</NavLink>}
           </>
         )}

@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import '../../style/productList.css';
-
-
+import ApiService from "../../service/ApiService";
 const ProductList = ({products}) => {
     const {cart, dispatch} = useCart();
+    const [user,setUser] = useState(null);   
+    const isAdmin = user?.role === "ADMIN";
+    useEffect(() => {
+    fetchUser();
+}, []);
+    const fetchUser = async () => {
+        try {
+            const res = await ApiService.getLoggedInUserInfo();
+            setUser(res.user);
+        } catch {
+            setUser(null);
+        }
+    };
 
     const addToCart = (product) => {
         dispatch({type: 'ADD_ITEM', payload: product});
@@ -45,7 +57,7 @@ const ProductList = ({products}) => {
                                     <button onClick={()=> incrementItem(product)}> + </button>
                                 </div>
                             ):(
-                                <button onClick={()=> addToCart(product)}>Thêm vào giỏ</button>
+                                !isAdmin && (<button onClick={()=> addToCart(product)}>Thêm vào giỏ</button>)
                             )}
                         </div>
                     )
