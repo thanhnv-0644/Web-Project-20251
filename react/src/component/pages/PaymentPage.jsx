@@ -11,7 +11,6 @@ const PaymentPage = () => {
   const [qrCodeUrl, setQrCodeUrl] = useState('');
   const [bankInfo, setBankInfo] = useState({});
   const [error, setError] = useState('');
-  const [timeRemaining, setTimeRemaining] = useState(null);
   const [showUploadProof, setShowUploadProof] = useState(false);
 
   // Lấy userId từ localStorage (hoặc từ context)
@@ -27,28 +26,6 @@ const PaymentPage = () => {
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
-
-  // Countdown timer
-  useEffect(() => {
-    if (payment?.expiredAt) {
-      const interval = setInterval(() => {
-        const now = new Date();
-        const expiry = new Date(payment.expiredAt);
-        const diff = expiry - now;
-
-        if (diff <= 0) {
-          setTimeRemaining('Đã hết hạn');
-          clearInterval(interval);
-        } else {
-          const minutes = Math.floor(diff / 60000);
-          const seconds = Math.floor((diff % 60000) / 1000);
-          setTimeRemaining(`${minutes}:${seconds.toString().padStart(2, '0')}`);
-        }
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [payment]);
 
   const fetchPaymentInfo = async () => {
     try {
@@ -215,15 +192,6 @@ const PaymentPage = () => {
                 🔄 Làm mới trang
               </button>
             </div>
-          </div>
-        )}
-
-        {timeRemaining && payment?.status === 'PENDING' && (
-          <div className="timer-box">
-            <span className="timer-icon">⏱️</span>
-            <span className="timer-text">
-              Thời gian còn lại: <strong>{timeRemaining}</strong>
-            </span>
           </div>
         )}
 
