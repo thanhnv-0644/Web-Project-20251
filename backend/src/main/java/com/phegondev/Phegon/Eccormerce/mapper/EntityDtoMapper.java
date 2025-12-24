@@ -27,11 +27,9 @@ public class EntityDtoMapper {
     public AddressDto mapAddressToDtoBasic(Address address){
         AddressDto addressDto = new AddressDto();
         addressDto.setId(address.getId());
-        addressDto.setCity(address.getCity());
         addressDto.setStreet(address.getStreet());
-        addressDto.setState(address.getState());
-        addressDto.setCountry(address.getCountry());
-        addressDto.setZipCode(address.getZipCode());
+        addressDto.setWard(address.getWard());
+        addressDto.setCity(address.getCity());
         return addressDto;
     }
 
@@ -50,8 +48,14 @@ public class EntityDtoMapper {
         orderItemDto.setId(orderItem.getId());
         orderItemDto.setQuantity(orderItem.getQuantity());
         orderItemDto.setPrice(orderItem.getPrice());
-        orderItemDto.setStatus(orderItem.getStatus().name());
+        // Status không còn được map từ OrderItem, chỉ lấy từ Order
         orderItemDto.setCreatedAt(orderItem.getCreatedAt());
+        
+        // Thêm orderId để frontend biết order nào
+        if (orderItem.getOrder() != null) {
+            orderItemDto.setOrderId(orderItem.getOrder().getId());
+        }
+        
         return orderItemDto;
     }
 
@@ -118,8 +122,45 @@ public class EntityDtoMapper {
 
     }
 
+    // Order to DTO Basic
+    public OrderDto mapOrderToDtoBasic(Order order){
+        OrderDto orderDto = new OrderDto();
+        orderDto.setId(order.getId());
+        orderDto.setTotalPrice(order.getTotalPrice());
+        orderDto.setCreatedAt(order.getCreatedAt());
+        orderDto.setStatus(order.getStatus() != null ? order.getStatus().name() : "PENDING");
+        
+        // Đếm số lượng items
+        if (order.getOrderItemList() != null) {
+            orderDto.setItemCount(order.getOrderItemList().size());
+        }
+        
+        return orderDto;
+    }
 
+    // Order to DTO with Items
+    public OrderDto mapOrderToDtoWithItems(Order order){
+        OrderDto orderDto = mapOrderToDtoBasic(order);
+        
+        if (order.getOrderItemList() != null && !order.getOrderItemList().isEmpty()) {
+            orderDto.setOrderItemList(order.getOrderItemList()
+                    .stream()
+                    .map(this::mapOrderItemToDtoPlusProduct)
+                    .collect(Collectors.toList()));
+        }
+        
+        return orderDto;
+    }
 
-
+    // Order to DTO with Items and User
+    public OrderDto mapOrderToDtoWithItemsAndUser(Order order){
+        OrderDto orderDto = mapOrderToDtoWithItems(order);
+        
+        if (order.getUser() != null) {
+            orderDto.setUser(mapUserToDtoPlusAddress(order.getUser()));
+        }
+        
+        return orderDto;
+    }
 
 }

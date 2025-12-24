@@ -20,7 +20,7 @@ const AddCategory = () => {
                 }, 3000)
             }
         } catch (error) {
-            setMessage(error.response?.data?.message || error.message || "Failed to save a category")
+            setMessage(error.response?.data?.message || error.message || "Không thể lưu danh mục")
         }
     }
 
@@ -28,13 +28,13 @@ const AddCategory = () => {
         <div className="add-category-page">
             {message && <p className="message">{message}</p>}
             <form onSubmit={handleSubmit} className="category-form">
-                <h2>Add Category</h2>
+                <h2>Thêm Danh Mục</h2>
                 <input type="text"
-                placeholder="Category Name"
+                placeholder="Tên danh mục"
                 value={name}
                 onChange={(e)=> setName(e.target.value)} />
 
-                <button type="submit">Add</button>
+                <button type="submit">Thêm</button>
             </form>
         </div>
     )

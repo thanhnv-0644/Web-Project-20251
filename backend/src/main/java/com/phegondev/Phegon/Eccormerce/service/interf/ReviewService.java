@@ -8,4 +8,8 @@ public interface ReviewService {
     Response addReview(ReviewRequestDto reviewRequestDto);
 
     Response getReviewsByProduct(Long productId);
+
+    Response updateReview(Long reviewId, ReviewRequestDto dto);
+
+    Response deleteReview(Long reviewId);
 }

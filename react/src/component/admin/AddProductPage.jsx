@@ -43,38 +43,38 @@ const AddProductPage = () => {
             }
 
         } catch (error) {
-            setMessage(error.response?.data?.message || error.message || 'unable to upload product')
+            setMessage(error.response?.data?.message || error.message || 'Không thể tải lên sản phẩm')
         }
     }
 
     return(
         <div>
             <form onSubmit={handleSubmit} className="product-form">
-                <h2>Add Product</h2>
+                <h2>Thêm Sản Phẩm</h2>
                 {message && <div className="message">{message}</div>}
                 <input type="file" onChange={handleImage} />
                 <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} >
-                    <option value="">Select Category</option>
+                    <option value="">Chọn danh mục</option>
                     {categories.map((cat)=>(
                         <option value={cat.id} key={cat.id}>{cat.name}</option>
                     ))}
                 </select>
                 <input type="text" 
-                placeholder="Product name"
+                placeholder="Tên sản phẩm"
                 value={name}
                 onChange={(e)=> setName(e.target.value)} />
 
                 <textarea 
-                placeholder="Description"
+                placeholder="Mô tả"
                 value={description}
                 onChange={(e)=> setDescription(e.target.value)}/>
 
                 <input type="number" 
-                placeholder="price"
+                placeholder="Giá"
                 value={price}
                 onChange={(e)=> setPrice(e.target.value)} />
 
-                <button type="submit">Add Product</button>
+                <button type="submit">Thêm Sản Phẩm</button>
             </form>
         </div>
     )

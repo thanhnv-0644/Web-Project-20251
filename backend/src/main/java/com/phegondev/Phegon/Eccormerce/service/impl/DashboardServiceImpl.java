@@ -11,7 +11,6 @@ import com.phegondev.Phegon.Eccormerce.repository.UserRepo;
 import com.phegondev.Phegon.Eccormerce.service.interf.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,32 +30,39 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     public Response getFullDashboard() {
 
-        // SUMMARY
-        BigDecimal totalRevenue =
-                orderItemRepo.getTotalRevenue(OrderStatus.DELIVERED);
+        // SUMMARY - Sử dụng Order thay vì OrderItem
+        // Chỉ tính revenue từ các order DELIVERED
+        BigDecimal totalRevenue = orderRepo.findByStatusOrderByCreatedAtDesc(OrderStatus.DELIVERED)
+                .stream()
+                .map(order -> order.getTotalPrice())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        Long totalOrders = orderRepo.count();
+        Long totalUsers = userRepo.count();
+        Long totalProducts = productRepo.count();
 
         DashboardSummaryDto summary = new DashboardSummaryDto(
-                totalRevenue == null ? BigDecimal.ZERO : totalRevenue,
-                orderRepo.count(),
-                userRepo.count(),
-                productRepo.count()
+                totalRevenue,
+                totalOrders,
+                totalUsers,
+                totalProducts
         );
 
-        // REVENUE BY MONTH
+        // REVENUE BY MONTH - Sử dụng OrderRepo để nhất quán với totalRevenue
         List<RevenueByMonthDto> revenueByMonth =
-                orderItemRepo.revenueByMonth(OrderStatus.DELIVERED)
+                orderRepo.revenueByMonthWithStatus(OrderStatus.DELIVERED)
                         .stream()
                         .map(dashboardMapper::toRevenueByMonthDto)
                         .toList();
 
-        // ORDER COUNT BY MONTH
+        // ORDER COUNT BY MONTH - Sử dụng OrderRepo
         List<OrderByMonthDto> orderByMonth =
                 orderRepo.orderCountByMonth()
                         .stream()
                         .map(dashboardMapper::toOrderByMonthDto)
                         .toList();
 
-        // TOP PRODUCTS
+        // TOP PRODUCTS - Sử dụng OrderItemRepo (đã update JOIN với Order)
         List<TopSellingProductDto> topProducts =
                 orderItemRepo.findTopSellingProducts(
                         OrderStatus.DELIVERED,

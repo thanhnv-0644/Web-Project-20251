@@ -4,12 +4,34 @@ package com.phegondev.Phegon.Eccormerce.exception;
 import com.phegondev.Phegon.Eccormerce.dto.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Response> handleValidationException(MethodArgumentNotValidException ex, WebRequest request){
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.put(error.getField(), error.getDefaultMessage())
+        );
+
+        String errorMessage = errors.values().stream()
+                .findFirst()
+                .orElse("Validation failed");
+
+        Response errorResponse = Response.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(errorMessage)
+                .build();
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Response> handleAllException(Exception ex, WebRequest request){

@@ -30,7 +30,7 @@ const CategoryProductsPage = () => {
             setTotalPages(Math.ceil(allProducts.length / itemsPerPage));
             setProducts(allProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage));
         } catch (error) {
-            setError(error.response?.data?.message || error.message || 'unable to fetch products by categoty id')
+            setError(error.response?.data?.message || error.message || 'Không thể tải sản phẩm theo danh mục')
         }
     }
 

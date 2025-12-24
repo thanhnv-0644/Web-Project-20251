@@ -18,7 +18,7 @@ const CategorySidebar = () => {
             const response = await ApiService.getAllCategory();
             setCategories(response.categoryList || []);
         } catch (err) {
-            setError(err.response?.data?.message || err.message || 'Unable to fetch categories');
+            setError(err.response?.data?.message || err.message || 'Không thể tải danh mục');
         }
     };
 

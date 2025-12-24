@@ -37,25 +37,25 @@ const DashboardPage = () => {
         }
     };
 
-    if (loading) return <p>Loading dashboard...</p>;
-    if (!summary) return <p>No data</p>;
+    if (loading) return <p>Đang tải bảng điều khiển...</p>;
+    if (!summary) return <p>Không có dữ liệu</p>;
 
     return (
         <div className="dashboard-page">
-            <h2>📊 Admin Dashboard</h2>
+            <h2>📊 Bảng Điều Khiển Admin</h2>
 
             <div className="dashboard-cards">
-                <div className="card">Revenue: ${summary.totalRevenue}</div>
-                <div className="card">Orders: {summary.totalOrders}</div>
-                <div className="card">Users: {summary.totalUsers}</div>
-                <div className="card">Products: {summary.totalProducts}</div>
+                <div className="card">Doanh thu: ${summary.totalRevenue}</div>
+                <div className="card">Đơn hàng: {summary.totalOrders}</div>
+                <div className="card">Người dùng: {summary.totalUsers}</div>
+                <div className="card">Sản phẩm: {summary.totalProducts}</div>
             </div>
 
             <div className="dashboard-charts">
                 <div className="chart-card">
-                    <h3>Revenue By Month</h3>
+                    <h3>Doanh Thu Theo Tháng</h3>
                     {revenueByMonth.length === 0 ? (
-                        <p>No data</p>
+                        <p>Không có dữ liệu</p>
                     ) : (
                         <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={revenueByMonth}>
@@ -70,7 +70,7 @@ const DashboardPage = () => {
                 </div>
 
                 <div className="chart-card">
-                    <h3>Top Products</h3>
+                    <h3>Sản Phẩm Bán Chạy</h3>
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={topProducts}>
                             <XAxis dataKey="productName" />
@@ -82,7 +82,7 @@ const DashboardPage = () => {
                 </div>
 
                 <div className="chart-card">
-                    <h3>User Growth</h3>
+                    <h3>Tăng Trưởng Người Dùng</h3>
                     <ResponsiveContainer width="100%" height={300}>
                         <LineChart data={userGrowth}>
                             <XAxis dataKey="month" />

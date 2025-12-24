@@ -15,11 +15,14 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String street;
-    private String city;
-    private String state;
-    private String zipCode;
-    private String country;
+    @Column(name = "street", nullable = false)
+    private String street; // Địa chỉ cụ thể (số nhà, tên đường)
+
+    @Column(name = "ward", nullable = false)
+    private String ward; // Phường
+
+    @Column(name = "city", nullable = false)
+    private String city; // Thành phố
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -35,10 +38,8 @@ public class Address {
         Address address = (Address) o;
         return id.equals(address.id) &&
                 Objects.equals(street, address.street) &&
+                Objects.equals(ward, address.ward) &&
                 Objects.equals(city, address.city) &&
-                Objects.equals(state, address.state) &&
-                Objects.equals(zipCode, address.zipCode) &&
-                Objects.equals(country, address.country) &&
                 address.canEqual(this);
     }
 

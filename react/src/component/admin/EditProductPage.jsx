@@ -73,14 +73,14 @@ const EditProductPage = () => {
       setMessage(
         error.response?.data?.message ||
           error.message ||
-          'unable to update product'
+          'Không thể cập nhật sản phẩm'
       );
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="product-form">
-      <h2>Edit Product</h2>
+      <h2>Sửa Sản Phẩm</h2>
       {message && <div className="message">{message}</div>}
       <input type="file" onChange={handleImageChange} />
       {imageUrl && <img src={imageUrl} alt={name} />}
@@ -89,7 +89,7 @@ const EditProductPage = () => {
         onChange={(e) => setCategoryId(e.target.value)}
         required
       >
-        <option value="">Select Category</option>
+        <option value="">Chọn danh mục</option>
         {categories.map((cat) => (
           <option value={cat.id} key={cat.id}>
             {cat.name}
@@ -99,14 +99,14 @@ const EditProductPage = () => {
 
       <input
         type="text"
-        placeholder="Product name"
+        placeholder="Tên sản phẩm"
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
       />
 
       <textarea
-        placeholder="Description"
+        placeholder="Mô tả"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         required
@@ -114,7 +114,7 @@ const EditProductPage = () => {
 
       <input
         type="number"
-        placeholder="Price"
+        placeholder="Giá"
         value={price}
         onChange={(e) => setPrice(e.target.value)}
         step="0.01"
@@ -122,7 +122,7 @@ const EditProductPage = () => {
         required
       />
 
-      <button type="submit">Update</button>
+      <button type="submit">Cập Nhật</button>
     </form>
   );
 };

@@ -2,6 +2,8 @@
     max-width: 900px;
     margin: 0 auto 50px auto;
     padding: 30px 20px;
+    min-height: calc(100vh - 200px);
+    background: #f5f7fa;
 }
 
 .admin-category-list {

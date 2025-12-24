@@ -6,11 +6,9 @@ import '../../style/address.css';
 const AddressPage = () => {
 
     const [address, setAddress] = useState({
-        street: '',
-        city: '',
-        state: '',
-        zipCode: '',
-        country: ''
+        street: '', // Địa chỉ cụ thể
+        ward: '',   // Phường
+        city: ''    // Thành phố
     });
 
     const [error, setError] = useState(null);
@@ -33,7 +31,7 @@ const AddressPage = () => {
                 setAddress(response.user.address)
             }
         } catch (error) {
-            setError(error.response?.data?.message || error.message || "unable to fetch user information")
+            setError(error.response?.data?.message || error.message || "Không thể tải thông tin người dùng")
         }
     } ;
 
@@ -51,7 +49,7 @@ const AddressPage = () => {
             await ApiService.saveAddress(address);
             navigate("/profile")
         } catch (error) {
-            setError(error.response?.data?.message || error.message || "Failed to save/update address")
+            setError(error.response?.data?.message || error.message || "Không thể lưu/cập nhật địa chỉ")
         }
     }
 
@@ -68,11 +66,11 @@ const AddressPage = () => {
                 
                 <form onSubmit={handSubmit}>
                     <div className="form-group">
-                        <label>Địa chỉ đường</label>
+                        <label>Địa chỉ cụ thể *</label>
                         <input 
                             type="text"
                             name="street"
-                            placeholder="Số nhà, tên đường"
+                            placeholder="Ví dụ: Số 123, Đường Nguyễn Trãi"
                             value={address.street}
                             onChange={handleChange}
                             required/>
@@ -80,47 +78,23 @@ const AddressPage = () => {
                     
                     <div className="form-row">
                         <div className="form-group">
-                            <label>Thành phố</label>
+                            <label>Phường/Xã *</label>
                             <input 
                                 type="text"
-                                name="city"
-                                placeholder="Hà Nội, TP.HCM, ..."
-                                value={address.city}
+                                name="ward"
+                                placeholder="Ví dụ: Phường Bến Thành"
+                                value={address.ward}
                                 onChange={handleChange}
                                 required/>
                         </div>
                         
                         <div className="form-group">
-                            <label>Tỉnh/Bang</label>
+                            <label>Thành phố *</label>
                             <input 
                                 type="text"
-                                name="state"
-                                placeholder="Tỉnh/Bang"
-                                value={address.state}
-                                onChange={handleChange}
-                                required/>
-                        </div>
-                    </div>
-
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label>Mã bưu điện</label>
-                            <input 
-                                type="text"
-                                name="zipCode"
-                                placeholder="100000"
-                                value={address.zipCode}
-                                onChange={handleChange}
-                                required/>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Quốc gia</label>
-                            <input 
-                                type="text"
-                                name="country"
-                                placeholder="Việt Nam"
-                                value={address.country}
+                                name="city"
+                                placeholder="Ví dụ: Hà Nội, TP. Hồ Chí Minh"
+                                value={address.city}
                                 onChange={handleChange}
                                 required/>
                         </div>

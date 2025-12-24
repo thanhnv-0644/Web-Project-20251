@@ -27,13 +27,13 @@ const RegisterPage = () => {
         try {
             const response = await ApiService.registerUser(formData);
             if (response.status === 200) {
-                setMessage("User Successfully Registerd");
+                setMessage("Đăng ký thành công");
                 setTimeout(() => {
                     navigate("/login")
                 }, 4000)
             }
         } catch (error) {
-            setMessage(error.response?.data.message || error.message || "unable to register a user");
+            setMessage(error.response?.data.message || error.message || "Không thể đăng ký");
         }
     }
 

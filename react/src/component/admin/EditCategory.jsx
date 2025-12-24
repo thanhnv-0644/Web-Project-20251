@@ -21,7 +21,7 @@ const EditCategory = () => {
             setName(response.category.name);
 
         } catch (error) {
-            setMessage(error.response?.data?.message || error.message || "Failed to get a category by id")
+            setMessage(error.response?.data?.message || error.message || "Không thể lấy danh mục theo id")
             setTimeout(() => {
                 setMessage('');
             }, 3000)
@@ -40,7 +40,7 @@ const EditCategory = () => {
                 }, 3000)
             }
         } catch (error) {
-            setMessage(error.response?.data?.message || error.message || "Failed to save a category")
+            setMessage(error.response?.data?.message || error.message || "Không thể lưu danh mục")
         }
     }
 
@@ -48,13 +48,13 @@ const EditCategory = () => {
         <div className="add-category-page">
             {message && <p className="message">{message}</p>}
             <form onSubmit={handleSubmit} className="category-form">
-                <h2>Edit Category</h2>
+                <h2>Sửa Danh Mục</h2>
                 <input type="text"
-                    placeholder="Category Name"
+                    placeholder="Tên danh mục"
                     value={name}
                     onChange={(e) => setName(e.target.value)} />
 
-                <button type="submit">Update</button>
+                <button type="submit">Cập Nhật</button>
             </form>
         </div>
     )

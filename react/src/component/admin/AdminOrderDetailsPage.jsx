@@ -33,12 +33,12 @@ const AdminOrderDetailsPage = () => {
     const handleSubmitStatusChange = async (orderItemId) => {
         try {
             await ApiService.updateOrderitemStatus(orderItemId, selectedStatus[orderItemId]);
-            setMessage('order item status was successfully updated')
+            setMessage('Cập nhật trạng thái đơn hàng thành công')
             setTimeout(() => {
                 setMessage('');
             }, 3000)
         } catch (error) {
-            setMessage(error.response?.data?.message || error.message || 'unable  to update order item status')
+            setMessage(error.response?.data?.message || error.message || 'Không thể cập nhật trạng thái đơn hàng')
         }
     }
 
@@ -46,43 +46,41 @@ const AdminOrderDetailsPage = () => {
     return (
         <div className="order-details-page">
             {message && <div className="message">{message}</div>}
-            <h2>Order Details</h2>
+            <h2>Chi Tiết Đơn Hàng</h2>
             {orderItems.length ? (
                 orderItems.map((orderItem) => (
                     <div key={orderItem.id} className="order-item-details">
                         <div className="info">
-                            <h3>Order Information</h3>
-                            <p><strong>Order Item ID:</strong>{orderItem.id}</p>
-                            <p><strong>Quantity:</strong>{orderItem.quantity}</p>
-                            <p><strong>Total Price:</strong>{orderItem.price}</p>
-                            <p><strong>Order Status:</strong>{orderItem.status}</p>
-                            <p><strong>date Ordered:</strong>{new Date(orderItem.createdAt).toLocaleDateString()}</p>
+                            <h3>Thông Tin Đơn Hàng</h3>
+                            <p><strong>Mã đơn hàng:</strong> {orderItem.id}</p>
+                            <p><strong>Số lượng:</strong> {orderItem.quantity}</p>
+                            <p><strong>Tổng tiền:</strong> {orderItem.price.toLocaleString('vi-VN')} VNĐ</p>
+                            <p><strong>Trạng thái:</strong> {orderItem.status}</p>
+                            <p><strong>Ngày đặt:</strong> {new Date(orderItem.createdAt).toLocaleDateString('vi-VN')}</p>
                         </div>
                         <div className="info">
-                            <h3>User Information</h3>
-                            <p><strong>Name:</strong>{orderItem.user.name}</p>
-                            <p><strong>Email:</strong>{orderItem.user.email}</p>
-                            <p><strong>Phone:</strong>{orderItem.user.phoneNumber}</p>
-                            <p><strong>Role:</strong>{orderItem.user.role}</p>
+                            <h3>Thông Tin Khách Hàng</h3>
+                            <p><strong>Họ tên:</strong> {orderItem.user.name}</p>
+                            <p><strong>Email:</strong> {orderItem.user.email}</p>
+                            <p><strong>Số điện thoại:</strong> {orderItem.user.phoneNumber}</p>
+                            <p><strong>Vai trò:</strong> {orderItem.user.role}</p>
 
                             <div className="info">
-                                <h3>Delivery Address</h3>
-                                <p><strong>Country:</strong>{orderItem.user.address?.country}</p>
-                                <p><strong>State:</strong>{orderItem.user.address?.state}</p>
-                                <p><strong>City:</strong>{orderItem.user.address?.city}</p>
-                                <p><strong>Street:</strong>{orderItem.user.address?.street}</p>
-                                <p><strong>Zip Code:</strong>{orderItem.user.address?.zipcode}</p>
+                                <h3>Địa Chỉ Giao Hàng</h3>
+                                <p><strong>Địa chỉ:</strong> {orderItem.user.address?.street}</p>
+                                <p><strong>Phường:</strong> {orderItem.user.address?.ward}</p>
+                                <p><strong>Thành phố:</strong> {orderItem.user.address?.city}</p>
                             </div>
                         </div>
                         <div>
-                            <h2>Product Information</h2>
+                            <h2>Thông Tin Sản Phẩm</h2>
                             <img src={orderItem.product.imageUrl} alt={orderItem.product.name} />
-                            <p><strong>Name:</strong>{orderItem.product.name}</p>
-                            <p><strong>Description:</strong>{orderItem.product.description}</p>
-                            <p><strong>Price:</strong>{orderItem.product.price}</p>
+                            <p><strong>Tên:</strong> {orderItem.product.name}</p>
+                            <p><strong>Mô tả:</strong> {orderItem.product.description}</p>
+                            <p><strong>Giá:</strong> {orderItem.product.price.toLocaleString('vi-VN')} VNĐ</p>
                         </div>
                         <div className="status-change">
-                            <h4>Change Status</h4>
+                            <h4>Thay Đổi Trạng Thái</h4>
                             <select
                                 className="status-option"
                                 value={selectedStatus[orderItem.id] || orderItem.status}
@@ -92,13 +90,13 @@ const AdminOrderDetailsPage = () => {
                                     <option key={status} value={status}>{status}</option>
                                 ))}
                             </select>
-                            <button className="update-status-button" onClick={() => handleSubmitStatusChange(orderItem.id)}>Update Status</button>
+                            <button className="update-status-button" onClick={() => handleSubmitStatusChange(orderItem.id)}>Cập Nhật</button>
                         </div>
                     </div>
 
                 ))
             ) : (
-                <p>Loading order details ....</p>
+                <p>Đang tải chi tiết đơn hàng...</p>
             )}
         </div>
     );

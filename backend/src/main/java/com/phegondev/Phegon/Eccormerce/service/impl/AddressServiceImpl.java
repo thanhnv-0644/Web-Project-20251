@@ -28,10 +28,8 @@ public class AddressServiceImpl implements AddressService {
             address.setUser(user);
         }
         if (addressDto.getStreet() != null) address.setStreet(addressDto.getStreet());
+        if (addressDto.getWard() != null) address.setWard(addressDto.getWard());
         if (addressDto.getCity() != null) address.setCity(addressDto.getCity());
-        if (addressDto.getState() != null) address.setState(addressDto.getState());
-        if (addressDto.getZipCode() != null) address.setZipCode(addressDto.getZipCode());
-        if (addressDto.getCountry() != null) address.setCountry(addressDto.getCountry());
 
         addressRepo.save(address);
 

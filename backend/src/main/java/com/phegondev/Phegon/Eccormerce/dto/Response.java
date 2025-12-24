@@ -41,6 +41,7 @@ public class Response {
 
     private OrderDto order;
     private List<OrderDto> orderList;
+    private Long orderId; // Thêm orderId để trả về khi tạo order
 
     private List<ReviewResponseDto> reviews;
     private Double averageRating;

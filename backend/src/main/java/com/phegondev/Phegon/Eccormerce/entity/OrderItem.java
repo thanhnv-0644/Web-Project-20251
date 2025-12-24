@@ -1,12 +1,19 @@
 package com.phegondev.Phegon.Eccormerce.entity;
 
-import com.phegondev.Phegon.Eccormerce.enums.OrderStatus;
-import jakarta.persistence.*;
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
 @Data
@@ -19,7 +26,6 @@ public class OrderItem {
 
     private int quantity;
     private BigDecimal price;
-    private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -40,12 +46,11 @@ public class OrderItem {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;  // Make sure it's the same class or subclass
+        if (o == null || getClass() != o.getClass()) return false;
         OrderItem that = (OrderItem) o;
         return quantity == that.quantity &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(price, that.price) &&
-                status == that.status &&
                 Objects.equals(user, that.user) &&
                 Objects.equals(product, that.product) &&
                 Objects.equals(order, that.order);
@@ -54,7 +59,7 @@ public class OrderItem {
     // hashCode method
     @Override
     public int hashCode() {
-        return Objects.hash(id, quantity, price, status, user, product, order);
+        return Objects.hash(id, quantity, price, user, product, order);
     }
 
     // canEqual method

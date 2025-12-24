@@ -26,13 +26,13 @@ const AdminCategoryPage = () => {
         navigate(`/admin/edit-category/${id}`)
     }
     const handleDelete = async(id) => {
-        const confirmed = window.confirm("Are your sure you want to delete this category? ")
+        const confirmed = window.confirm("Bạn có chắc chắn muốn xóa danh mục này?")
         if(confirmed){
             try {
                 await ApiService.deleteCategory(id);
                 fetchCategories();
             } catch (error) {
-                console.log("Error deleting category by id")
+                console.log("Lỗi khi xóa danh mục")
             }
         }
     }
@@ -40,15 +40,15 @@ const AdminCategoryPage = () => {
     return(
         <div className="admin-category-page">
             <div className="admin-category-list">
-                <h2>Categories</h2>
-                <button onClick={()=> navigate('/admin/add-category')}>Add Category</button>
+                <h2>Danh Mục</h2>
+                <button onClick={()=> navigate('/admin/add-category')}>Thêm Danh Mục</button>
                 <ul>
                     {categories.map((category) => (
                         <li key={category.id}>
                             <span>{category.name}</span>
                             <div className="admin-bt">
-                                    <button className="admin-btn-edit" onClick={()=> handleEdit(category.id)}>Edit</button>
-                                    <button  onClick={()=> handleDelete(category.id)}>Delete</button>
+                                    <button className="admin-btn-edit" onClick={()=> handleEdit(category.id)}>Sửa</button>
+                                    <button  onClick={()=> handleDelete(category.id)}>Xóa</button>
                             </div>
                         </li>
                     ))}

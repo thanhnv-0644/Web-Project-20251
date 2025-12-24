@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiService from "../../service/ApiService";
 import { useCart } from "../context/CartContext";
@@ -8,6 +8,37 @@ const CartPage = () => {
     const { cart, dispatch } = useCart();
     const [message, setMessage] = useState(null);
     const navigate = useNavigate();
+
+    // Kiểm tra xem có pending order đã được thanh toán chưa
+    useEffect(() => {
+        const checkPendingOrder = async () => {
+            const pendingOrderId = localStorage.getItem('pendingOrderId');
+            if (pendingOrderId) {
+                try {
+                    // Kiểm tra payment status của order
+                    const paymentResponse = await ApiService.getPaymentByOrder(pendingOrderId);
+                    
+                    if (paymentResponse.success) {
+                        const paymentStatus = paymentResponse.data.payment.status;
+                        
+                        // Nếu đã PAID, clear cart
+                        if (paymentStatus === 'PAID') {
+                            dispatch({ type: 'CLEAR_CART' });
+                            localStorage.removeItem('pendingOrderId');
+                            localStorage.removeItem('pendingCart');
+                            setMessage('Đơn hàng của bạn đã được thanh toán thành công!');
+                            setTimeout(() => setMessage(''), 3000);
+                        }
+                    }
+                } catch (err) {
+                    // Nếu không tìm thấy payment, có thể order chưa có payment
+                    console.log('No payment found for pending order');
+                }
+            }
+        };
+
+        checkPendingOrder();
+    }, [dispatch]);
 
 
     const incrementItem = (product) => {
@@ -30,7 +61,7 @@ const CartPage = () => {
 
     const handleCheckout = async () => {
         if (!ApiService.isAuthenticated()) {
-            setMessage("You need to login first before you can place an order");
+            setMessage("Bạn cần đăng nhập trước khi đặt hàng");
             setTimeout(() => {
                 setMessage('')
                 navigate("/login")
@@ -50,18 +81,31 @@ const CartPage = () => {
 
         try {
             const response = await ApiService.createOrder(orderRequest);
+            console.log('Create Order Response:', response); // Debug log
             setMessage(response.message)
 
-            setTimeout(() => {
-                setMessage('')
-            }, 5000);
-
             if (response.status === 200) {
-                dispatch({ type: 'CLEAR_CART' })
+                // Lưu orderId vào localStorage để clear cart sau khi thanh toán thành công
+                const orderId = response.orderId || response.data?.orderId;
+                console.log('OrderId:', orderId); // Debug log
+                
+                if (orderId) {
+                    // Lưu cart items để có thể restore nếu cần
+                    localStorage.setItem('pendingOrderId', orderId);
+                    localStorage.setItem('pendingCart', JSON.stringify(cart));
+                    
+                    console.log('Navigating to:', `/payment/${orderId}`); // Debug log
+                    setTimeout(() => {
+                        navigate(`/payment/${orderId}`);
+                    }, 500);
+                } else {
+                    console.error('No orderId in response:', response); // Debug log
+                    setMessage('Không thể lấy orderId. Vui lòng thử lại.');
+                }
             }
 
         } catch (error) {
-            setMessage(error.response?.data?.message || error.message || 'Failed to place an order');
+            setMessage(error.response?.data?.message || error.message || 'Không thể đặt hàng');
             setTimeout(() => {
                 setMessage('')
             }, 3000);

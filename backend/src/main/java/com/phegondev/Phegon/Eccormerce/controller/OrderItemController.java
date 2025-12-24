@@ -5,6 +5,7 @@ import com.phegondev.Phegon.Eccormerce.dto.OrderRequest;
 import com.phegondev.Phegon.Eccormerce.dto.Response;
 import com.phegondev.Phegon.Eccormerce.enums.OrderStatus;
 import com.phegondev.Phegon.Eccormerce.service.interf.OrderItemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +25,15 @@ public class OrderItemController {
     private final OrderItemService orderItemService;
 
     @PostMapping("/create")
-    public ResponseEntity<Response> placeOrder(@RequestBody OrderRequest orderRequest){
+    public ResponseEntity<Response> placeOrder(@Valid @RequestBody OrderRequest orderRequest){
         return ResponseEntity.ok(orderItemService.placeOrder(orderRequest));
     }
 
+    @Deprecated
     @PutMapping("/update-item-status/{orderItemId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response> updateOrderItemStatus(@PathVariable Long orderItemId,  @RequestParam String status){
+        // Endpoint deprecated: Sử dụng OrderController.updateOrderStatus() thay thế
         return ResponseEntity.ok(orderItemService.updateOrderItemStatus(orderItemId, status));
     }
 
