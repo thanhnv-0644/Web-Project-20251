@@ -168,7 +168,7 @@ const ProductDetailsPage = () => {
                             <button onClick={incrementItem}>+</button>
                         </div>
                     ) : (
-                        <button  className="add-to-cart-btn" onClick={addToCart}>Thêm vào giỏ</button>
+                        !isAdmin && (<button className="add-to-cart-btn" onClick={addToCart}> Thêm vào giỏ </button>)
                     )}
                 </div>
             </div>

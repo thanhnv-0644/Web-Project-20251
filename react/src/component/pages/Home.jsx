@@ -14,7 +14,6 @@ const Home = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [error, setError] = useState(null);
     const itemsPerPage = 8;
-    
     useEffect(() => {
     const snowContainer = document.getElementById("snow");
     if (!snowContainer) return;
