@@ -72,7 +72,7 @@ public class PaymentProofController {
             return ResponseEntity.badRequest().body(response);
             
         } catch (IllegalStateException e) {
-            // Lỗi trạng thái: payment đã PAID hoặc EXPIRED
+            // Lỗi trạng thái: payment đã PAID
             response.put("success", false);
             response.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response); // 409 Conflict
