@@ -325,6 +325,10 @@
     gap: 5px;
 }
 
+.info-row.full-width {
+    grid-column: 1 / -1;
+}
+
 .info-row .label {
     font-size: 13px;
     color: #718096;
@@ -335,6 +339,7 @@
     font-size: 15px;
     color: #2d3748;
     font-weight: 600;
+    word-break: break-word;
 }
 
 /* Order Items Card */

@@ -11,9 +11,10 @@ const Navbar = () => {
   const isAdmin = ApiService.isAdmin();
   const isAuthenticated = ApiService.isAuthenticated();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const isProfileRoute = location.pathname.startsWith('/profile') || 
-                         location.pathname.startsWith('/add-address') || 
-                         location.pathname.startsWith('/edit-address');
+  const isProfileRoute =
+    location.pathname.startsWith('/profile') ||
+    location.pathname.startsWith('/add-address') ||
+    location.pathname.startsWith('/edit-address');
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
@@ -37,11 +38,11 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <NavLink to={isAdmin ? "/" : "/"}>
+        <NavLink to={isAdmin ? '/' : '/'}>
           <img src="/phegon_mart.png" alt="Phegon Mart" />
         </NavLink>
       </div>
-      
+
       {/* SEARCH FORM - Chỉ hiện khi không phải trang admin hoặc profile của admin */}
       {!(isAdminRoute || (isProfileRoute && isAdmin)) && (
         <form className="navbar-search" onSubmit={handleSearchSubmit}>
@@ -72,7 +73,9 @@ const Navbar = () => {
             {isAdmin && <NavLink to="/admin">Admin</NavLink>}
             {!isAuthenticated && <NavLink to="/login">Login</NavLink>}
             {!isAdmin && <NavLink to="/cart">Cart</NavLink>}
-            {isAuthenticated && <NavLink onClick={handleLogout}>Logout</NavLink>}
+            {isAuthenticated && (
+              <NavLink onClick={handleLogout}>Logout</NavLink>
+            )}
           </>
         )}
       </div>

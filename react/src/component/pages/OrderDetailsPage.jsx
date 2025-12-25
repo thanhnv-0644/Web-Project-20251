@@ -3,14 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ApiService from '../../service/ApiService';
 import '../../style/orderDetails.css';
 
-const OrderStatus = [
-  'PENDING',
-  'CONFIRMED',
-  'SHIPPED',
-  'DELIVERED',
-  'CANCELLED',
-  'RETURNED',
-];
+const OrderStatus = ['PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED'];
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
@@ -128,7 +121,7 @@ const OrderDetailsPage = () => {
             <div className="summary-item">
               <span className="label">Tổng tiền:</span>
               <span className="value price">
-                ${order.totalPrice?.toFixed(2) || '0.00'}
+                {order.totalPrice || '0.00'} Đồng
               </span>
             </div>
             <div className="summary-item">
@@ -227,7 +220,7 @@ const OrderDetailsPage = () => {
         {/* User Info (Admin only) */}
         {isAdmin && order.user && (
           <div className="info-card">
-            <h3>👤 Thông tin khách hàng</h3>
+            <h3>Thông tin khách hàng</h3>
             <div className="info-grid">
               <div className="info-row">
                 <span className="label">Tên:</span>
@@ -242,20 +235,12 @@ const OrderDetailsPage = () => {
                 <span className="value">{order.user.phoneNumber}</span>
               </div>
               {order.user.address && (
-                <>
-                  <div className="info-row">
-                    <span className="label">Địa chỉ:</span>
-                    <span className="value">{order.user.address.street}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Phường:</span>
-                    <span className="value">{order.user.address.ward}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Thành phố:</span>
-                    <span className="value">{order.user.address.city}</span>
-                  </div>
-                </>
+                <div className="info-row full-width">
+                  <span className="label">Địa chỉ:</span>
+                  <span className="value">
+                    {order.user.address.street}, {order.user.address.ward}, {order.user.address.city}
+                  </span>
+                </div>
               )}
             </div>
           </div>
@@ -282,9 +267,7 @@ const OrderDetailsPage = () => {
                       <span className="item-quantity">
                         Số lượng: {item.quantity}
                       </span>
-                      <span className="item-price">
-                        ${item.price?.toFixed(2) || '0.00'}
-                      </span>
+                      <span className="item-price">{item.price || '0.00'}</span>
                     </div>
                   </div>
                 </div>

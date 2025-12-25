@@ -222,14 +222,14 @@ const PaymentDetailModal = ({
                   {formatDateTime(payment.createdAt)}
                 </span>
               </div>
-              {payment.expiredAt && (
+              {/* {payment.expiredAt && (
                 <div className="info-item">
                   <span className="label">Hết hạn:</span>
                   <span className="value">
                     {formatDateTime(payment.expiredAt)}
                   </span>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
 
