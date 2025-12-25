@@ -28,10 +28,6 @@ public class OrderItem {
     private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
@@ -51,7 +47,6 @@ public class OrderItem {
         return quantity == that.quantity &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(price, that.price) &&
-                Objects.equals(user, that.user) &&
                 Objects.equals(product, that.product) &&
                 Objects.equals(order, that.order);
     }
@@ -59,7 +54,7 @@ public class OrderItem {
     // hashCode method
     @Override
     public int hashCode() {
-        return Objects.hash(id, quantity, price, user, product, order);
+        return Objects.hash(id, quantity, price, product, order);
     }
 
     // canEqual method

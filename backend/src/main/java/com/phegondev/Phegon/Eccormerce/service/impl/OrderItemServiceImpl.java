@@ -55,8 +55,7 @@ public class OrderItemServiceImpl implements OrderItemService {
             orderItem.setProduct(product);
             orderItem.setQuantity(orderItemRequest.getQuantity());
             orderItem.setPrice(product.getPrice().multiply(BigDecimal.valueOf(orderItemRequest.getQuantity()))); //set price according to the quantity
-            // Status không còn được set ở OrderItem, chỉ ở Order level
-            orderItem.setUser(user);
+            // User được lấy từ order.getUser(), không cần set trực tiếp
             return orderItem;
 
         }).collect(Collectors.toList());

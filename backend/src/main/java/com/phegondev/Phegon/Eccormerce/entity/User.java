@@ -1,16 +1,24 @@
 package com.phegondev.Phegon.Eccormerce.entity;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import com.phegondev.Phegon.Eccormerce.enums.UserRole;
-import jakarta.persistence.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
 
 @Data
 @Entity
@@ -41,9 +49,6 @@ public class User {
     @Column(name = "role")
     private UserRole role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OrderItem> orderItemList;
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private Address address;
 
@@ -62,14 +67,13 @@ public class User {
                 Objects.equals(password, user.password) &&
                 Objects.equals(phoneNumber, user.phoneNumber) &&
                 role == user.role &&
-                Objects.equals(orderItemList, user.orderItemList) &&
                 Objects.equals(address, user.address);
     }
 
     // hashCode method
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, phoneNumber, role, orderItemList, address);  // Excluding createdAt from hashCode
+        return Objects.hash(id, name, email, password, phoneNumber, role, address);  // Excluding createdAt from hashCode
     }
 
     // canEqual method

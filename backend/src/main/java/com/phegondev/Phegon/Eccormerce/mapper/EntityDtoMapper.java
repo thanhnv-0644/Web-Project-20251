@@ -100,8 +100,9 @@ public class EntityDtoMapper {
     public OrderItemDto mapOrderItemToDtoPlusProductAndUser(OrderItem orderItem){
         OrderItemDto orderItemDto = mapOrderItemToDtoPlusProduct(orderItem);
 
-        if (orderItem.getUser() != null){
-            UserDto userDto = mapUserToDtoPlusAddress(orderItem.getUser());
+        // Lấy user từ order thay vì trực tiếp từ orderItem
+        if (orderItem.getOrder() != null && orderItem.getOrder().getUser() != null){
+            UserDto userDto = mapUserToDtoPlusAddress(orderItem.getOrder().getUser());
             orderItemDto.setUser(userDto);
         }
         return orderItemDto;
@@ -109,17 +110,11 @@ public class EntityDtoMapper {
 
 
     //USer to DTO with Address and Order Items History
+    @Deprecated
     public UserDto mapUserToDtoPlusAddressAndOrderHistory(User user) {
-        UserDto userDto = mapUserToDtoPlusAddress(user);
-
-        if (user.getOrderItemList() != null && !user.getOrderItemList().isEmpty()) {
-            userDto.setOrderItemList(user.getOrderItemList()
-                    .stream()
-                    .map(this::mapOrderItemToDtoPlusProduct)
-                    .collect(Collectors.toList()));
-        }
-        return userDto;
-
+        // Method deprecated: User không còn trực tiếp liên kết với OrderItem
+        // Sử dụng OrderService.getMyOrders() để lấy order history
+        return mapUserToDtoPlusAddress(user);
     }
 
     // Order to DTO Basic
