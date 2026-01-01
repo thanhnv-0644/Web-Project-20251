@@ -29,9 +29,46 @@
   box-shadow: 0 4px 12px rgba(231, 76, 60, 0.1);
 }
 
+/* Tablet lớn */
+@media (max-width: 1200px) {
+  .home {
+    padding: 20px 30px;
+  }
+
+  .home-container {
+    grid-template-columns: 240px 1fr;
+    gap: 25px;
+  }
+}
+
+/* Tablet */
 @media (max-width: 968px) {
+  .home {
+    padding: 20px;
+  }
+
   .home-container {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+}
+
+/* Mobile lớn */
+@media (max-width: 768px) {
+  .home {
+    padding: 15px;
+  }
+}
+
+/* Mobile nhỏ */
+@media (max-width: 480px) {
+  .home {
+    padding: 10px;
+  }
+
+  .error-message {
+    font-size: 16px;
+    padding: 15px;
+    margin: 20px auto;
   }
 }

@@ -95,7 +95,7 @@ const AdminPaymentManagement = () => {
       <div className="page-header">
         <h1>Quản lý thanh toán</h1>
         <button className="btn-refresh" onClick={fetchPayments}>
-          🔄 Làm mới
+          Làm mới
         </button>
       </div>
 

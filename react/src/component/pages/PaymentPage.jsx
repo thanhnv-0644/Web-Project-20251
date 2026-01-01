@@ -32,7 +32,7 @@ const PaymentPage = () => {
       setLoading(true);
       setError(''); // Clear previous errors
       console.log('Fetching payment for orderId:', orderId);
-      
+
       const response = await ApiService.createPaymentForOrder(orderId, 15);
       console.log('Payment response:', response);
 
@@ -40,11 +40,11 @@ const PaymentPage = () => {
         const paymentData = response.data.payment;
         const qrUrl = response.data.qrCodeUrl;
         const bank = response.data.bankInfo;
-        
+
         setPayment(paymentData);
         setQrCodeUrl(qrUrl);
         setBankInfo(bank);
-        
+
         console.log('Payment data:', paymentData);
         console.log('QR Code URL:', qrUrl);
         console.log('Bank info:', bank);
@@ -53,11 +53,17 @@ const PaymentPage = () => {
       }
     } catch (err) {
       console.error('Payment error:', err);
-      const errorMsg = err.response?.data?.message || err.message || 'Không thể tạo thanh toán';
+      const errorMsg =
+        err.response?.data?.message ||
+        err.message ||
+        'Không thể tạo thanh toán';
       setError(errorMsg);
-      
+
       // Nếu lỗi duplicate, có thể order đã có payment rồi, thử lấy payment hiện tại
-      if (errorMsg.includes('Duplicate') || errorMsg.includes('đã được thanh toán')) {
+      if (
+        errorMsg.includes('Duplicate') ||
+        errorMsg.includes('đã được thanh toán')
+      ) {
         try {
           const existingPayment = await ApiService.getPaymentByOrder(orderId);
           if (existingPayment.success) {
@@ -111,27 +117,30 @@ const PaymentPage = () => {
     try {
       setLoading(true);
       setError('');
-      
+
       // ONE-TO-ONE: Refresh payment hiện tại (không tạo mới)
       // Backend sẽ trả về payment hiện tại với message yêu cầu upload proof mới
       const response = await ApiService.createPaymentForOrder(orderId, 15);
-      
+
       if (response.success) {
         const paymentData = response.data.payment;
         const qrUrl = response.data.qrCodeUrl;
         const bank = response.data.bankInfo;
-        
+
         setPayment(paymentData);
         setQrCodeUrl(qrUrl);
         setBankInfo(bank);
-        
+
         alert('Vui lòng upload minh chứng thanh toán mới!');
       } else {
         setError(response.message || 'Không thể làm mới thanh toán');
       }
     } catch (err) {
       console.error('Retry payment error:', err);
-      const errorMsg = err.response?.data?.message || err.message || 'Không thể làm mới thanh toán';
+      const errorMsg =
+        err.response?.data?.message ||
+        err.message ||
+        'Không thể làm mới thanh toán';
       setError(errorMsg);
       alert(errorMsg);
     } finally {
@@ -157,7 +166,7 @@ const PaymentPage = () => {
               ← Quay lại giỏ hàng
             </button>
             <button className="btn-primary" onClick={fetchPaymentInfo}>
-              🔄 Thử lại
+              Thử lại
             </button>
           </div>
         </div>
@@ -188,8 +197,11 @@ const PaymentPage = () => {
               <p className="rejection-instruction">
                 Vui lòng upload minh chứng thanh toán mới bên dưới.
               </p>
-              <button className="btn-retry-payment" onClick={handleRetryPayment}>
-                🔄 Làm mới trang
+              <button
+                className="btn-retry-payment"
+                onClick={handleRetryPayment}
+              >
+                Làm mới trang
               </button>
             </div>
           </div>
@@ -219,8 +231,11 @@ const PaymentPage = () => {
               </div>
               <div className="info-row">
                 <span className="label">Số tài khoản:</span>
-                <span className="value copyable" onClick={() => copyToClipboard(bankInfo.accountNo)}>
-                  {bankInfo.accountNo} <span className="copy-icon">📋</span>
+                <span
+                  className="value copyable"
+                  onClick={() => copyToClipboard(bankInfo.accountNo)}
+                >
+                  {bankInfo.accountNo} <span className="copy-icon"></span>
                 </span>
               </div>
               <div className="info-row">
@@ -235,8 +250,11 @@ const PaymentPage = () => {
               </div>
               <div className="info-row highlight">
                 <span className="label">Nội dung CK:</span>
-                <span className="value copyable" onClick={() => copyToClipboard(payment?.transferContent)}>
-                  {payment?.transferContent} <span className="copy-icon">📋</span>
+                <span
+                  className="value copyable"
+                  onClick={() => copyToClipboard(payment?.transferContent)}
+                >
+                  {payment?.transferContent} <span className="copy-icon"></span>
                 </span>
               </div>
             </div>
@@ -244,7 +262,10 @@ const PaymentPage = () => {
             <div className="warning-box">
               <strong>Lưu ý quan trọng:</strong>
               <ul>
-                <li>Chuyển khoản <strong>ĐÚNG số tiền</strong> và <strong>ĐÚNG nội dung</strong></li>
+                <li>
+                  Chuyển khoản <strong>ĐÚNG số tiền</strong> và{' '}
+                  <strong>ĐÚNG nội dung</strong>
+                </li>
                 <li>Sau khi chuyển khoản, vui lòng upload ảnh minh chứng</li>
                 <li>Admin sẽ duyệt trong vòng 5-10 phút</li>
               </ul>
@@ -257,10 +278,13 @@ const PaymentPage = () => {
           <button className="btn-back" onClick={handleBackToCart}>
             ← Quay lại
           </button>
-          
-          {(payment?.status === 'PENDING' || payment?.status === 'REJECTED') && (
+
+          {(payment?.status === 'PENDING' ||
+            payment?.status === 'REJECTED') && (
             <button className="btn-upload-proof" onClick={handleUploadProof}>
-              📸 {payment?.status === 'REJECTED' ? 'Upload lại minh chứng' : 'Upload minh chứng'}
+              {payment?.status === 'REJECTED'
+                ? 'Upload lại minh chứng'
+                : 'Upload minh chứng'}
             </button>
           )}
         </div>
@@ -406,4 +430,3 @@ const getStatusText = (status) => {
 };
 
 export default PaymentPage;
-

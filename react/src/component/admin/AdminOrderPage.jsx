@@ -97,7 +97,7 @@ const AdminOrdersPage = () => {
             ))}
           </select>
         </div>
-        <div className="searchStatus">
+        {/* <div className="searchStatus">
           <label>Tìm theo trạng thái</label>
           <select value={searchStatus} onChange={handleSearchStatusChange}>
             <option value="">Tất cả</option>
@@ -107,7 +107,7 @@ const AdminOrdersPage = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
       </div>
 
       <table className="orders-table">
